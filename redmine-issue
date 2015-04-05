@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 var program = require('commander');
 var redmine = require('./redmine.js');
-var printer = require('./printer.js')
+var printer = require('./printer.js');
 
 program
   .parse(process.argv);

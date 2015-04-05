@@ -1,4 +1,5 @@
 var Table = require('cli-table');
+var swig = require('swig');
 
 var table = new Table({
     head: ['ID', 'Tracker', 'Status', 'Priority', 'Assignee', 'Updated']
@@ -24,5 +25,6 @@ exports.printIssues = function(issues){
 }
 
 exports.printIssue = function(issue){
-  console.log(issue.tracker.name + ' #' + issue.id);
+  var out = swig.renderFile('tmpl/issue.tmpl', issue);
+  console.log(out);
 }
