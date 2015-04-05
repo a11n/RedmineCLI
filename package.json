@@ -4,13 +4,14 @@
   "description": "A NodeJS Redmine client.",
   "preferGlobal": "true",
   "directories": {
-    "bin": "bin"
+    "bin": "bin/",
     "test": "test"
   },
   "dependencies": {
     "cli-table": "^0.3.1",
     "commander": "^2.7.1",
-    "should": "^5.2.0",
+    "nconf": "^0.7.1",
+    "swig": "^1.4.2",
     "sync-request": "^2.0.1"
   },
   "scripts": {

@@ -3,7 +3,6 @@ var redmine = require('../module/redmine.js');
 var printer = require('../module/printer.js')
 
 try{
-  redmine.connect('http://redmine.org', 'apiKey');
   var projects = redmine.getProjects();
   printer.printProjects(projects.projects);
 } catch(err){console.error(err)}

@@ -12,7 +12,6 @@ program
   .parse(process.argv);
 
 try{
-  redmine.connect('http://redmine.org', 'apiKey');
   var issues = redmine.getIssues();
   printer.printIssues(issues.issues);
 } catch(err){console.error(err)}

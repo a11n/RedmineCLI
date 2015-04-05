@@ -1,20 +1,23 @@
 var request = require('sync-request');
+var nconf = require('nconf');
 
-var _serverUrl;
-var _apiKey;
+nconf.file('config.json');
 
 var throwWhenNotConnected = function(){
-  if(!_serverUrl || !_apiKey)
-  throw 'Not connected.'
+  if(!nconf.get('serverUrl') || !nconf.get('apiKey'))
+    throw 'Not connected.'
 }
 
 var get = function(path){
-  return request('GET', _serverUrl + path);
+  var url = nconf.get('serverUrl') + path;
+  var options = { headers: {'X-Redmine-API-Key': nconf.get('apiKey')}};
+  return request('GET', url, options);
 }
 
 exports.connect = function(serverUrl, apiKey){
-  _serverUrl = serverUrl;
-  _apiKey = apiKey;
+  nconf.set('serverUrl', serverUrl);
+  nconf.set('apiKey', apiKey);
+  nconf.save();
 }
 
 exports.getIssues = function(){
