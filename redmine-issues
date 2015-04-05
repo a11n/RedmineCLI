@@ -1,29 +1,18 @@
 #!/usr/bin/env node
+var program = require('commander');
+var redmine = require('./redmine.js');
+var printer = require('./printer.js')
 
-var unirest = require('unirest');
-var Table = require('cli-table');
+program
+  .option('-P, --project <project>', 'Only display issues for the specified project.')
+  .option('-p, --priority <priority>', 'Only display issues with specified priority.')
+  .option('-a, --assignee <assignee>', 'Only display issues for the specified assignee.')
+  .option('-s, --status <status>', 'Only display issues with the specified status.')
+  .option('-t, --tracker <tracker>', 'Only display issues for the specified tracker.')
+  .parse(process.argv);
 
-var table = new Table({
-    head: ['ID', 'Tracker', 'Status', 'Priority', 'Assignee', 'Updated']
-});
-
-unirest.get('http://redmine.org/issues.json')
-.end(function (response) {
-  var issues = response.body.issues || [];
-  for(var i=0; i<issues.length;i++){
-    var issue = issues[i];
-    var id = issue.id;
-    var tracker = issue.tracker.name;
-    var status = issue.status.name;
-    var priority = issue.priority.name;
-    var assignee;
-    if(!!issue.assigned_to)
-      assignee = issue.assigned_to.name;
-    else
-      assignee = '(not assigned)';
-
-    table.push([id, tracker, status, priority, assignee, issue.updated_on]);
-  }
-
-  console.log(table.toString());
-});
+try{
+  redmine.connect('http://redmine.org', 'apiKey');
+  var issues = redmine.getIssues();
+  printer.printIssues(issues.issues);
+} catch(err){console.error(err)}

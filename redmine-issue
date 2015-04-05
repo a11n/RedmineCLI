@@ -1,0 +1,20 @@
+#!/usr/bin/env node
+var program = require('commander');
+var redmine = require('./redmine.js');
+var printer = require('./printer.js')
+
+program
+  .parse(process.argv);
+
+var id = program.args;
+
+if (!id.length) {
+  console.error('Please provide an id.');
+  process.exit(1);
+}
+
+try{
+  redmine.connect('http://redmine.org', 'apiKey');
+  var issue = redmine.getIssue(id);
+  printer.printIssue(issue.issue);
+} catch(err){console.error(err)}

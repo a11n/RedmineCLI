@@ -8,5 +8,5 @@ program
   .command('projects', 'Display projects.')
   .command('project [key]', 'Display project details.')
   .command('issues', 'Display issue details.')
-  .command('issue [id]', 'Display issue details.')
+  .command('issue <id>', 'Display issue details.')
   .parse(process.argv);
