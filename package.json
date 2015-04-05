@@ -1,0 +1,34 @@
+{
+  "name": "redmine-cli",
+  "version": "0.1.0",
+  "description": "A NodeJS Redmine client.",
+  "preferGlobal": "true",
+  "directories": {
+    "bin": "bin"
+    "test": "test"
+  },
+  "dependencies": {
+    "cli-table": "^0.3.1",
+    "commander": "^2.7.1",
+    "should": "^5.2.0",
+    "sync-request": "^2.0.1"
+  },
+  "scripts": {
+    "test": "node test/test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/a11n/RedmineCLI.git"
+  },
+  "keywords": [
+    "Redmine",
+    "CLI",
+    "REST"
+  ],
+  "author": "André Diermann",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/a11n/RedmineCLI/issues"
+  },
+  "homepage": "https://github.com/a11n/RedmineCLI"
+}

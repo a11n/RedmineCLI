@@ -1,0 +1,14 @@
+{{tracker.name|upper}} #{{id}}
+-
+{{subject}}
+Added by {{author.name}} at {{created_on|date('Y-m-d')}}.{% if updated_on %} Updated at {{updated_on|date('Y-m-d')}}.{% endif %}
+-
+STATUS
+{{status.name}}
+PRIORITY
+{{priority.name}}
+ASSIGNEE
+{{assigned_to.name}}{% if !assigned_to %}(not assigned){% endif %}
+-
+DESCRIPTION
+{{description}}
