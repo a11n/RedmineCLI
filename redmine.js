@@ -26,6 +26,15 @@ exports.getIssues = function(){
   } catch(err) {throw 'Could not load issues.'}
 }
 
+exports.getProjects = function(){
+  throwWhenNotConnected();
+
+  var response = get('/projects.json');
+  try{
+    return JSON.parse(response.getBody('utf8'));
+  } catch(err) {throw 'Could not load projects.'}
+}
+
 exports.getIssue = function(id){
   throwWhenNotConnected();
 

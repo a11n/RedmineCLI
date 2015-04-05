@@ -1,11 +1,10 @@
 var Table = require('cli-table');
 var swig = require('swig');
 
-var table = new Table({
-    head: ['ID', 'Tracker', 'Status', 'Priority', 'Assignee', 'Updated']
-});
-
 exports.printIssues = function(issues){
+  var table = new Table({
+      head: ['ID', 'Tracker', 'Status', 'Priority', 'Assignee', 'Updated']
+  });
   for(var i=0; i<issues.length;i++){
     var issue = issues[i];
     var id = issue.id;
@@ -27,4 +26,19 @@ exports.printIssues = function(issues){
 exports.printIssue = function(issue){
   var out = swig.renderFile('tmpl/issue.tmpl', issue);
   console.log(out);
+}
+
+exports.printProjects = function(projects){
+  var table = new Table({
+      head: ['Name', 'Key']
+  });
+  for(var i=0; i<projects.length;i++){
+    var project = projects[i];
+    var name = project.name;
+    var identifier = project.identifier;
+
+    table.push([name, identifier]);
+  }
+
+  console.log(table.toString());
 }
