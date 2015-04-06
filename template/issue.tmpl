@@ -1,7 +1,7 @@
 {{tracker.name|upper}} #{{id}}
 -
 {{subject}}
-Added by {{author.name}} at {{created_on|date('Y-m-d')}}.{% if updated_on %} Updated at {{updated_on|date('Y-m-d')}}.{% endif %}
+Added by {{author.name}} {{created_on|ago}}.{% if updated_on %} Updated {{updated_on|ago}}.{% endif %}
 -
 STATUS
 {{status.name}}

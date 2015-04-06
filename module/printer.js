@@ -1,5 +1,5 @@
 var Table = require('cli-table');
-var swig = require('swig');
+var tmpl = require('./template-engine.js');
 
 exports.printIssues = function(issues){
   var table = new Table({
@@ -24,7 +24,7 @@ exports.printIssues = function(issues){
 }
 
 exports.printIssue = function(issue){
-  var out = swig.renderFile('template/issue.tmpl', issue);
+  var out = tmpl.renderFile('template/issue.tmpl', issue);
   console.log(out);
 }
 
