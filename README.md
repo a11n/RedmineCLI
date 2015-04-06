@@ -1,4 +1,4 @@
-# RedmineCLI
+# RedmineCLI [![npm version](http://img.shields.io/npm/v/redmine-cli.svg?style=flat)](https://www.npmjs.com/package/redmine-cli) [![npm license](https://img.shields.io/npm/l/redmine-cli.svg)](https://www.npmjs.com/package/redmine-cli)
 A NodeJS, stateful, console-based Redmine client.
 
 ## Installation
