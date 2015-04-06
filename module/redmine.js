@@ -20,15 +20,6 @@ exports.connect = function(serverUrl, apiKey){
   nconf.save();
 }
 
-exports.getIssues = function(){
-  throwWhenNotConnected();
-
-  var response = get('/issues.json');
-  try{
-    return JSON.parse(response.getBody('utf8'));
-  } catch(err) {throw 'Could not load issues.'}
-}
-
 exports.getProjects = function(){
   throwWhenNotConnected();
 
@@ -36,6 +27,24 @@ exports.getProjects = function(){
   try{
     return JSON.parse(response.getBody('utf8'));
   } catch(err) {throw 'Could not load projects.'}
+}
+
+exports.getProject = function(identifier){
+  throwWhenNotConnected();
+
+  var response = get('/projects/'+ identifier +'.json');
+  try{
+    return JSON.parse(response.getBody('utf8'));
+  } catch(err) {throw 'Could not load project.'}
+}
+
+exports.getIssues = function(){
+  throwWhenNotConnected();
+
+  var response = get('/issues.json');
+  try{
+    return JSON.parse(response.getBody('utf8'));
+  } catch(err) {throw 'Could not load issues.'}
 }
 
 exports.getIssue = function(id){

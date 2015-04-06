@@ -14,6 +14,13 @@ exports.handleProjects = function(){
   } catch(err){console.error(err)}
 }
 
+exports.handleProject = function(identifier){
+  try{
+    var project = redmine.getProject(identifier);
+    printer.printProject(project.project);
+  } catch(err){console.error(err)}
+}
+
 exports.handleIssues = function(options){
   try{
     var issues = redmine.getIssues();

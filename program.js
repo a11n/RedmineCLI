@@ -16,6 +16,11 @@ program
   .action(actions.handleProjects);
 
 program
+  .command('project <identifier>')
+  .description('Display project details.')
+  .action(actions.handleProject);
+
+program
   .command('issues')
   .description('Display issues.')
   .option('-P, --project <project>', 'Only display issues for the specified project.')
