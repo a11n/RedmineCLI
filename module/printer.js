@@ -19,3 +19,8 @@ exports.printIssue = function(issue){
   var out = tmpl.renderFile('template/issue.tmpl', issue);
   console.log(out);
 }
+
+exports.printStatuses = function(statuses){
+  var out = tmpl.renderFile('template/statuses.tmpl', statuses);
+  console.log(out);
+}

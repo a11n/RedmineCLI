@@ -64,3 +64,12 @@ exports.getIssue = function(id){
     return JSON.parse(response.getBody('utf8'));
   } catch(err) {throw 'Could not load issue.'}
 }
+
+exports.getStatuses = function(){
+  throwWhenNotConnected();
+
+  var response = get('/issue_statuses.json');
+  try{
+    return JSON.parse(response.getBody('utf8'));
+  } catch(err) {throw 'Could not load issue statuses.'}
+}

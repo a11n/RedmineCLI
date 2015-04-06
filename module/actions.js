@@ -38,3 +38,10 @@ exports.handleIssue = function(id){
     printer.printIssue(issue.issue);
   } catch(err){console.error(err)}
 }
+
+exports.handleStatuses = function(options){
+  try{
+    var statuses = redmine.getStatuses();
+    printer.printStatuses(statuses);
+  } catch(err){console.error(err)}
+}

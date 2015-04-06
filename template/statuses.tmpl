@@ -1,0 +1,5 @@
+{% filter table(['ID', 'NAME', 'DEFAULT', 'CLOSED']) -%}
+{% for status in issue_statuses -%}
+{{status.id}}|{{status.name}}|{%if status.is_default %}X{% endif %}|{%if status.is_closed %}X{% endif %}
+{% endfor -%}
+{% endfilter -%}
