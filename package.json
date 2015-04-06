@@ -4,7 +4,7 @@
   "description": "A NodeJS Redmine client.",
   "preferGlobal": "true",
   "directories": {
-    "bin": "bin/",
+    "bin": "bin",
     "test": "test"
   },
   "dependencies": {
