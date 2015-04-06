@@ -1,9 +1,14 @@
 var swig = require('swig');
 var moment = require('moment');
 var Table = require('cli-table');
+var colors = require('colors');
 
 swig.setFilter('ago', function (input) {
   return moment(input).fromNow();
+});
+
+swig.setFilter('heading', function (input) {
+  return input.toUpperCase().bold.underline;
 });
 
 swig.setFilter('table', function (input, head) {

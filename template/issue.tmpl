@@ -1,14 +1,10 @@
-{{tracker.name|upper}} #{{id}}
--
+{% filter heading %}{{tracker.name}} #{{id}}{% endfilter %}
 {{subject}}
 Added by {{author.name}} {{created_on|ago}}.{% if updated_on %} Updated {{updated_on|ago}}.{% endif %}
--
-STATUS
-{{status.name}}
-PRIORITY
-{{priority.name}}
-ASSIGNEE
-{{assigned_to.name}}{% if !assigned_to %}(not assigned){% endif %}
--
-DESCRIPTION
+
+{% filter table(['STATUS', 'PRIORITY', 'ASSIGNEE']) -%}
+{{status.name}}|{{priority.name}}|{{assigned_to.name|default('(not assigned)')}}
+{% endfilter %}
+
+{% filter heading %}DESCRIPTION{% endfilter %}
 {{description}}
