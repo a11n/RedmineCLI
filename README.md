@@ -13,22 +13,19 @@ Connect to your Redmine instance.
 
 You are all set, have fun :)
 
-##Usage
+## Usage
 Display available commands and options.
 ```shell
 >redmine --help
 Usage: redmine [options] [command]
 
-
   Commands:
-
     connect <url> <apiKey>  Connect to server using API key for authentication.
     projects                Display projects.
     issues [options]        Display issues.
     issue <id>              Display issue details.
 
   Options:
-
     -h, --help     output usage information
     -V, --version  output the version number
 ```
