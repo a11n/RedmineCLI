@@ -35,6 +35,38 @@ Options:
   -V, --version  output the version number
 ```
 
+Or display the options of a certain command.
+```shell
+>redmine issues --help
+  Usage: issues [options]
+
+  Display issues.
+
+  Options:
+    -h, --help                 output usage information
+    -p, --project <project>    Only display issues for the specified project.
+    -P, --priority <priority>  Only display issues with specified priority.
+    -a, --assignee <assignee>  Only display issues for the specified assignee.
+    -s, --status <status>      Only display issues with the specified status.
+    -t, --tracker <tracker>    Only display issues for the specified tracker.
+    -m, --me                   Only display issues assigned to me.
+    -o, --open                 Only display open issues.
+    -c, --closed               Only display closed issues.
+```
+
+## Example
+Display all issues assigned to you.
+```shell
+>redmine issues --me
+┌────┬─────────┬────────┬──────────┬────────────────┬────────────────────┐
+│ ID │ TRACKER │ STATUS │ PRIORITY │ ASSIGNEE       │ SUBJECT            │
+├────┼─────────┼────────┼──────────┼────────────────┼────────────────────┤
+│ 2  │ Bug     │ New    │ High     │ Admin Istrator │ This is a bug.     │
+├────┼─────────┼────────┼──────────┼────────────────┼────────────────────┤
+│ 1  │ Feature │ New    │ Urgent   │ Admin Istrator │ This is a feature. │
+└────┴─────────┴────────┴──────────┴────────────────┴────────────────────┘
+```
+
 ## Remark
 It's still under active development!
 
