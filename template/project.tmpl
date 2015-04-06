@@ -1,2 +1,10 @@
-{% filter heading %}{{name}}{% endfilter %}
-{{description|default('(no description set)')}}
+{% filter heading %}{{project.name}}{% endfilter %}
+{{project.description|default('(no description set)')}}
+
+{% filter heading %}Members{% endfilter %}
+{% filter table(['NAME', 'ROLE']) -%}
+{% for membership in memberships -%}
+{% set role = membership.roles|first -%}
+{{membership.user.name}}|{{role.name}}
+{% endfor -%}
+{% endfilter -%}

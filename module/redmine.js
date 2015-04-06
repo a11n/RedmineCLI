@@ -38,6 +38,15 @@ exports.getProject = function(identifier){
   } catch(err) {throw 'Could not load project.'}
 }
 
+exports.getProjectMemberships = function(identifier){
+  throwWhenNotConnected();
+
+  var response = get('/projects/'+ identifier +'/memberships.json');
+  try{
+    return JSON.parse(response.getBody('utf8'));
+  } catch(err) {throw 'Could not load project.'}
+}
+
 exports.getIssues = function(){
   throwWhenNotConnected();
 

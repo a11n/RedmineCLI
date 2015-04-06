@@ -17,7 +17,11 @@ exports.handleProjects = function(){
 exports.handleProject = function(identifier){
   try{
     var project = redmine.getProject(identifier);
-    printer.printProject(project.project);
+    var memberships = redmine.getProjectMemberships(identifier);
+
+    project.memberships = memberships.memberships
+
+    printer.printProject(project);
   } catch(err){console.error(err)}
 }
 
