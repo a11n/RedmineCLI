@@ -1,8 +1,9 @@
 var program = require('commander');
 var actions = require('./module/actions.js');
+var package = require('./package.json');
 
 program
-  .version('0.1.0');
+  .version(package.version);
 
 program
   .command('connect <url> <apiKey>')
