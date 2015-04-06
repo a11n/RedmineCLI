@@ -10,7 +10,7 @@ exports.handleConnect = function(url, apiKey){
 exports.handleProjects = function(){
   try{
     var projects = redmine.getProjects();
-    printer.printProjects(projects.projects);
+    printer.printProjects(projects);
   } catch(err){console.error(err)}
 }
 
@@ -28,7 +28,7 @@ exports.handleProject = function(identifier){
 exports.handleIssues = function(options){
   try{
     var issues = redmine.getIssues();
-    printer.printIssues(issues.issues);
+    printer.printIssues(issues);
   } catch(err){console.error(err)}
 }
 
