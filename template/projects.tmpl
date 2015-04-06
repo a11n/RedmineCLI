@@ -1,0 +1,5 @@
+{% filter table(['NAME', 'IDENTIFIER']) -%}
+{% for project in projects -%}
+{{project.name}}|{{project.identifier}}
+{% endfor -%}
+{% endfilter -%}

@@ -1,0 +1,5 @@
+{% filter table(['ID', 'TRACKER', 'STATUS', 'PRIORITY', 'ASSIGNEE']) -%}
+{% for issue in issues -%}
+{{issue.id}}|{{issue.tracker.name}}|{{issue.status.name}}|{{issue.priority.name}}|{{issue.assigned_to.name}}{% if !issue.assigned_to %}(not assigned){% endif %}
+{% endfor -%}
+{% endfilter -%}
