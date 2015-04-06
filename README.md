@@ -1,10 +1,17 @@
 # RedmineCLI [![npm version](http://img.shields.io/npm/v/redmine-cli.svg?style=flat)](https://www.npmjs.com/package/redmine-cli) [![npm license](https://img.shields.io/npm/l/redmine-cli.svg)](https://www.npmjs.com/package/redmine-cli)
 A NodeJS, stateful, console-based Redmine client.
 
-## Installation
+## Installation & Setup
 ```shell
 npm install -g redmine-cli
 ```
+Connect to your Redmine instance.
+```shell
+>redmine connect http://your.server/redmine yourApiKey
+```
+**Note:** Unless you don't want to switch to another Redmine instance you only need to call this once.
+
+You are all set, have fun :)
 
 ##Usage
 Display available commands and options.
@@ -24,11 +31,6 @@ Usage: redmine [options] [command]
 
     -h, --help     output usage information
     -V, --version  output the version number
-```
-
-Connect to your Redmine instance.
-```shell
->redmine connect http://your.server/redmine yourApiKey
 ```
 
 ## Remark
