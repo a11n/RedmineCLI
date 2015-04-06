@@ -1,5 +1,6 @@
 var request = require('sync-request');
 var nconf = require('nconf');
+var open = require('open');
 
 nconf.file('config.json');
 
@@ -72,4 +73,12 @@ exports.getStatuses = function(){
   try{
     return JSON.parse(response.getBody('utf8'));
   } catch(err) {throw 'Could not load issue statuses.'}
+}
+
+exports.open = function(id){
+  throwWhenNotConnected();
+
+  var url = nconf.get('serverUrl') + '/issues/' + id;
+  console.log(url);
+  open(url);
 }

@@ -35,10 +35,25 @@ program
   .description('Display issue details.')
   .action(actions.handleIssue);
 
-  program
-    .command('statuses')
-    .description('Display available issue statuses.')
-    .action(actions.handleStatuses);
+program
+  .command('statuses')
+  .description('Display available issue statuses.')
+  .action(actions.handleStatuses);
+
+program
+  .command('trackers')
+  .description('Display available trackers.')
+  .action(actions.handleStatuses);
+
+program
+  .command('priorities')
+  .description('Display available priorities.')
+  .action(actions.handleStatuses);
+
+program
+  .command('open <id>')
+  .description('Open issue in default browser.')
+  .action(actions.handleOpen);
 
 program
   .parse(process.argv);

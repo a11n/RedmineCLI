@@ -45,3 +45,9 @@ exports.handleStatuses = function(options){
     printer.printStatuses(statuses);
   } catch(err){console.error(err)}
 }
+
+exports.handleOpen = function(id){
+  try{
+    redmine.open(id);
+  } catch(err){console.error(err)}
+}
