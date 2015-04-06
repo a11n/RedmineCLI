@@ -1,5 +1,6 @@
 var redmine = require('../module/redmine.js');
 var printer = require('../module/printer.js');
+var filter = require('./filter.js');
 
 exports.handleConnect = function(url, apiKey){
   try{
@@ -27,7 +28,8 @@ exports.handleProject = function(identifier){
 
 exports.handleIssues = function(options){
   try{
-    var issues = redmine.getIssues();
+    var filters = filter.issuesFiltersFrom(options);
+    var issues = redmine.getIssues(filters);
     printer.printIssues(issues);
   } catch(err){console.error(err)}
 }

@@ -1,6 +1,7 @@
 var request = require('sync-request');
 var nconf = require('nconf');
 var open = require('open');
+var querystring = require('querystring');
 
 nconf.file('config.json');
 
@@ -48,10 +49,11 @@ exports.getProjectMemberships = function(identifier){
   } catch(err) {throw 'Could not load project.'}
 }
 
-exports.getIssues = function(){
+exports.getIssues = function(filters){
   throwWhenNotConnected();
 
-  var response = get('/issues.json');
+  var query = querystring.stringify(filters);
+  var response = get('/issues.json' + (query ? '?' + query : query));
   try{
     return JSON.parse(response.getBody('utf8'));
   } catch(err) {throw 'Could not load issues.'}
