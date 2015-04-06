@@ -24,3 +24,13 @@ exports.printStatuses = function(statuses){
   var out = tmpl.renderFile('template/statuses.tmpl', statuses);
   console.log(out);
 }
+
+exports.printTrackers = function(trackers){
+  var out = tmpl.renderFile('template/trackers.tmpl', trackers);
+  console.log(out);
+}
+
+exports.printPriorities = function(priorities){
+  var out = tmpl.renderFile('template/priorities.tmpl', priorities);
+  console.log(out);
+}

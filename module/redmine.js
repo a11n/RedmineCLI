@@ -75,10 +75,27 @@ exports.getStatuses = function(){
   } catch(err) {throw 'Could not load issue statuses.'}
 }
 
+exports.getTrackers = function(){
+  throwWhenNotConnected();
+
+  var response = get('/trackers.json');
+  try{
+    return JSON.parse(response.getBody('utf8'));
+  } catch(err) {throw 'Could not load issue statuses.'}
+}
+
+exports.getPriorities = function(){
+  throwWhenNotConnected();
+
+  var response = get('/enumerations/issue_priorities.json');
+  try{
+    return JSON.parse(response.getBody('utf8'));
+  } catch(err) {throw 'Could not load issue statuses.'}
+}
+
 exports.open = function(id){
   throwWhenNotConnected();
 
   var url = nconf.get('serverUrl') + '/issues/' + id;
-  console.log(url);
   open(url);
 }

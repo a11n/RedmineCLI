@@ -43,12 +43,12 @@ program
 program
   .command('trackers')
   .description('Display available trackers.')
-  .action(actions.handleStatuses);
+  .action(actions.handleTrackers);
 
 program
   .command('priorities')
   .description('Display available priorities.')
-  .action(actions.handleStatuses);
+  .action(actions.handlePriorities);
 
 program
   .command('open <id>')

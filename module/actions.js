@@ -46,6 +46,20 @@ exports.handleStatuses = function(options){
   } catch(err){console.error(err)}
 }
 
+exports.handleTrackers = function(options){
+  try{
+    var trackers = redmine.getTrackers();
+    printer.printTrackers(trackers);
+  } catch(err){console.error(err)}
+}
+
+exports.handlePriorities = function(options){
+  try{
+    var priorities = redmine.getPriorities();
+    printer.printPriorities(priorities);
+  } catch(err){console.error(err)}
+}
+
 exports.handleOpen = function(id){
   try{
     redmine.open(id);

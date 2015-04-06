@@ -19,15 +19,20 @@ Display available commands and options.
 >redmine --help
 Usage: redmine [options] [command]
 
-  Commands:
-    connect <url> <apiKey>  Connect to server using API key for authentication.
-    projects                Display projects.
-    issues [options]        Display issues.
-    issue <id>              Display issue details.
+Commands:
+  connect <url> <apiKey>  Connect to server using API key for authentication.
+  projects                Display projects.
+  project <identifier>    Display project details.
+  issues [options]        Display issues.
+  issue <id>              Display issue details.
+  statuses                Display available issue statuses.
+  trackers                Display available trackers.
+  priorities              Display available priorities.
+  open <id>               Open issue in default browser.
 
-  Options:
-    -h, --help     output usage information
-    -V, --version  output the version number
+Options:
+  -h, --help     output usage information
+  -V, --version  output the version number
 ```
 
 ## Remark
@@ -36,6 +41,4 @@ It's still under active development!
 ### Roadmap
 * Filter issue list
 * Issue history
-* Project details
-* Display available Trackers, Statuses and Priorities
 * Modify issues

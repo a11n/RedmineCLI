@@ -1,0 +1,5 @@
+{% filter table(['ID', 'NAME', 'DEFAULT']) -%}
+{% for priority in issue_priorities -%}
+{{priority.id}}|{{priority.name}}|{%if priority.is_default %}X{% endif %}
+{% endfor -%}
+{% endfilter -%}

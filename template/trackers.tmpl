@@ -1,0 +1,5 @@
+{% filter table(['ID', 'NAME']) -%}
+{% for tracker in trackers -%}
+{{tracker.id}}|{{tracker.name}}
+{% endfor -%}
+{% endfilter -%}
