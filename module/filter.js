@@ -1,3 +1,5 @@
+var redmine = require('./redmine.js');
+
 var removeNullValues = function(object){
   for (var i in object) {
     if (object[i] === null) {
@@ -6,7 +8,15 @@ var removeNullValues = function(object){
   }
 }
 
+var resolveIdsForNames = function(options){
+  if(options.priority) options.priority = redmine.getPriorityIdByName(options.priority);
+  if(options.status) options.status = redmine.getStatusIdByName(options.status);
+  if(options.tracker) options.tracker = redmine.getTrackerIdByName(options.tracker);
+}
+
 exports.issuesFiltersFrom = function(options){
+  resolveIdsForNames(options);
+
   var filters = {
     'project_id': options.project || null,
     'priority_id': options.priority || null,

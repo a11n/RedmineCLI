@@ -58,13 +58,9 @@ Or display the options of a certain command.
 Display all issues assigned to you.
 ```shell
 >redmine issues --me
-┌────┬─────────┬────────┬──────────┬────────────────┬────────────────────┐
-│ ID │ TRACKER │ STATUS │ PRIORITY │ ASSIGNEE       │ SUBJECT            │
-├────┼─────────┼────────┼──────────┼────────────────┼────────────────────┤
-│ 2  │ Bug     │ New    │ High     │ Admin Istrator │ This is a bug.     │
-├────┼─────────┼────────┼──────────┼────────────────┼────────────────────┤
-│ 1  │ Feature │ New    │ Urgent   │ Admin Istrator │ This is a feature. │
-└────┴─────────┴────────┴──────────┴────────────────┴────────────────────┘
+ID  TRACKER  STATUS  PRIORITY  ASSIGNEE        SUBJECT
+#2  Bug      New     High      Admin Istrator  This is a bug. 
+#1  Feature  New     Urgent    Admin Istrator  This is a feature.
 ```
 
 ## Remark

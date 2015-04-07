@@ -92,13 +92,33 @@ exports.getStatuses = function(){
   } catch(err) {throw 'Could not load issue statuses.'}
 }
 
+exports.getStatusIdByName = function(name){
+  var statuses = exports.getStatuses().issue_statuses;
+  for(var i = 0; i < statuses.length; i++){
+    if(name == statuses[i].name)
+      return statuses[i].id;
+  }
+
+  throw '\''+ name +'\' is not valid status.';
+}
+
 exports.getTrackers = function(){
   throwWhenNotConnected();
 
   var response = get('/trackers.json');
   try{
     return JSON.parse(response.getBody('utf8'));
-  } catch(err) {throw 'Could not load issue statuses.'}
+  } catch(err) {throw 'Could not load trackers.'}
+}
+
+exports.getTrackerIdByName = function(name){
+  var trackers = exports.getTrackers().trackers;
+  for(var i = 0; i < trackers.length; i++){
+    if(name == trackers[i].name)
+      return trackers[i].id;
+  }
+
+  throw '\''+ name +'\' is not valid tracker.';
 }
 
 exports.getPriorities = function(){
@@ -107,7 +127,17 @@ exports.getPriorities = function(){
   var response = get('/enumerations/issue_priorities.json');
   try{
     return JSON.parse(response.getBody('utf8'));
-  } catch(err) {throw 'Could not load issue statuses.'}
+  } catch(err) {throw 'Could not load issue priorities.'}
+}
+
+exports.getPriorityIdByName = function(name){
+  var priorities = exports.getPriorities().issue_priorities;
+  for(var i = 0; i < priorities.length; i++){
+    if(name == priorities[i].name)
+      return priorities[i].id;
+  }
+
+  throw '\''+ name +'\' is not valid priority.';
 }
 
 exports.open = function(id){
