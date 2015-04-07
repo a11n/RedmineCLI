@@ -93,7 +93,7 @@ exports.getIssues = function(filters){
 exports.getIssue = function(id){
   throwWhenNotConnected();
 
-  var response = get('/issues/'+ id +'.json');
+  var response = get('/issues/'+ id +'.json?include=journals');
   try{
     return JSON.parse(response.getBody('utf8'));
   } catch(err) {throw 'Could not load issue.'}
