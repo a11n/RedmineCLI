@@ -4,7 +4,8 @@ var filter = require('./filter.js');
 
 exports.handleConnect = function(url, apiKey){
   try{
-    redmine.connect(url, apiKey);
+    var user = redmine.connect(url, apiKey);
+    printer.printSuccessfullyConnected(url, user);
   } catch(err){console.error(err)}
 }
 

@@ -10,16 +10,32 @@ var throwWhenNotConnected = function(){
     throw 'Not connected.'
 }
 
-var get = function(path){
-  var url = nconf.get('serverUrl') + path;
-  var options = { headers: {'X-Redmine-API-Key': nconf.get('apiKey')}};
+var get = function(path, serverUrl, apiKey){
+  serverUrl = serverUrl || nconf.get('serverUrl');
+  apiKey = apiKey || nconf.get('apiKey');
+
+  var url = serverUrl + path;
+  var options = { headers: {'X-Redmine-API-Key': apiKey}};
   return request('GET', url, options);
 }
 
 exports.connect = function(serverUrl, apiKey){
+  var response = get('/users/current.json', serverUrl, apiKey);
+
+  var user;
+  try{
+    user = JSON.parse(response.getBody('utf8'));
+    if(user.user)
+      user = user.user;
+    else
+      throw 'Invalid result';
+  } catch(err) {throw 'Connection to \'' + serverUrl + '\' failed.'};
+
   nconf.set('serverUrl', serverUrl);
   nconf.set('apiKey', apiKey);
   nconf.save();
+
+  return user;
 }
 
 exports.getProjects = function(){
@@ -46,7 +62,7 @@ exports.getProjectMemberships = function(identifier){
   var response = get('/projects/'+ identifier +'/memberships.json');
   try{
     return JSON.parse(response.getBody('utf8'));
-  } catch(err) {throw 'Could not load project.'}
+  } catch(err) {throw 'Could not load project memberships.'}
 }
 
 exports.getProjectMembershipsGroupedByRole = function(identifier){
