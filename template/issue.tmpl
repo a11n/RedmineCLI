@@ -7,4 +7,4 @@ Added by {{author.name}} {{created_on|ago}}.{% if updated_on %} Updated {{update
 {% endfilter %}
 
 {% filter heading %}DESCRIPTION{% endfilter %}
-{{description}}
+{{description|default('(no description set)')}}
