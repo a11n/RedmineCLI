@@ -70,7 +70,12 @@ Display all issues assigned to you.
 ## Remark
 It's still under active development!
 
-### Roadmap
-* Filter issue list
-* Issue history
-* Modify issues
+## Roadmap
+* **v0.6.0** (due 2015-04-12)
+  * More connection options (noauth for public Redmines and username/password as alternative to apiKey)
+  * Textual filter paramter (`redmine issues --status=New --priority=High --tracker=Feature`)
+  * Enhanced project details (memberships are grouped by role, like in the web solution)
+  * Integration of issue history into issue-details
+* **v0.7.0** (due 2015-04-19)
+  * Create issues/projects
+  * Update issues/projects
