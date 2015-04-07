@@ -2,9 +2,12 @@
 {{project.description|default('(no description set)')}}
 
 {% filter heading %}Members{% endfilter %}
-{% filter table(['NAME', 'ROLE']) -%}
-{% for membership in memberships -%}
-{% set role = membership.roles|first -%}
-{{membership.user.name}}|{{role.name}}
+{% if Object.keys(roles).length > 0 -%}
+{% filter table(['ROLE', 'MEMBER(S)']) -%}
+{% for role in roles -%}
+{{role.name}}|{% for member in role.members %}{% if !loop.first %}, {% endif %}{{member}}{% endfor %}
 {% endfor -%}
 {% endfilter -%}
+{% else -%}
+(no members set)
+{% endif %}

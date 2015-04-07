@@ -18,9 +18,9 @@ exports.handleProjects = function(){
 exports.handleProject = function(identifier){
   try{
     var project = redmine.getProject(identifier);
-    var memberships = redmine.getProjectMemberships(identifier);
+    var roles = redmine.getProjectMembershipsGroupedByRole(identifier);
 
-    project.memberships = memberships.memberships
+    project.roles = roles;
 
     printer.printProject(project);
   } catch(err){console.error(err)}

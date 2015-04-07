@@ -49,6 +49,21 @@ exports.getProjectMemberships = function(identifier){
   } catch(err) {throw 'Could not load project.'}
 }
 
+exports.getProjectMembershipsGroupedByRole = function(identifier){
+  var roles = {};
+  var memberships = exports.getProjectMemberships(identifier).memberships;
+  for(var i = 0; i < memberships.length; i++){
+    var membership = memberships[i];
+    for(var j = 0; j < membership.roles.length; j++){
+      var role = membership.roles[j];
+      if(!(role.name in roles)) roles[role.name] = {'name': role.name, 'members': []};
+      roles[role.name].members.push(membership.user.name);
+    }
+  }
+
+  return roles;
+}
+
 exports.getIssues = function(filters){
   throwWhenNotConnected();
 
