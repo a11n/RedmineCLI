@@ -38,3 +38,8 @@ exports.printPriorities = function(priorities){
   var out = tmpl.renderFile('template/priorities.tmpl', priorities);
   console.log(out);
 }
+
+exports.printUsers = function(users){
+  var out = tmpl.renderFile('template/users.tmpl', users);
+  console.log(out);
+}

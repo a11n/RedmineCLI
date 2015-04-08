@@ -2,6 +2,7 @@ var request = require('sync-request');
 var nconf = require('nconf');
 var open = require('open');
 var querystring = require('querystring');
+var resolver = require('./resolver.js');
 
 nconf.file('config.json');
 
@@ -90,12 +91,19 @@ exports.getIssues = function(filters){
   } catch(err) {throw 'Could not load issues.'}
 }
 
-exports.getIssue = function(id){
+exports.getIssue = function(id, options){
   throwWhenNotConnected();
 
-  var response = get('/issues/'+ id +'.json?include=journals');
+  var include = '';
+  if(options.history)
+    include = '?include=journals';
+  var response = get('/issues/'+ id +'.json' + include);
   try{
-    return JSON.parse(response.getBody('utf8'));
+    var issue = JSON.parse(response.getBody('utf8'));
+    if(issue.issue.journals)
+      resolver.resolveHistoryIdsToNames(issue.issue);
+
+    return issue;
   } catch(err) {throw 'Could not load issue.'}
 }
 
@@ -118,6 +126,16 @@ exports.getStatusIdByName = function(name){
   throw '\''+ name +'\' is not valid status.';
 }
 
+exports.getStatusNameById = function(id){
+  var statuses = exports.getStatuses().issue_statuses;
+  for(var i = 0; i < statuses.length; i++){
+    if(id == statuses[i].id)
+      return statuses[i].name;
+  }
+
+  throw '\''+ id +'\' is not valid status id.';
+}
+
 exports.getTrackers = function(){
   throwWhenNotConnected();
 
@@ -137,6 +155,16 @@ exports.getTrackerIdByName = function(name){
   throw '\''+ name +'\' is not valid tracker.';
 }
 
+exports.getTrackerNameById = function(id){
+  var trackers = exports.getTrackers().trackers;
+  for(var i = 0; i < trackers.length; i++){
+    if(id == trackers[i].id)
+      return trackers[i].name;
+  }
+
+  throw '\''+ id +'\' is not valid tracker id.';
+}
+
 exports.getPriorities = function(){
   throwWhenNotConnected();
 
@@ -154,6 +182,35 @@ exports.getPriorityIdByName = function(name){
   }
 
   throw '\''+ name +'\' is not valid priority.';
+}
+
+exports.getPriorityNameById = function(id){
+  var priorities = exports.getPriorities().issue_priorities;
+  for(var i = 0; i < priorities.length; i++){
+    if(id == priorities[i].id)
+      return priorities[i].name;
+  }
+
+  throw '\''+ id +'\' is not valid priority id.';
+}
+
+exports.getUsers = function(){
+  throwWhenNotConnected();
+
+  var response = get('/users.json');
+  try{
+    return JSON.parse(response.getBody('utf8'));
+  } catch(err) {throw 'Could not load users.'}
+}
+
+exports.getAssigneeNameById = function(id){
+  var users = exports.getUsers().users;
+  for(var i = 0; i < users.length; i++){
+    if(id == users[i].id)
+      return users[i].firstname + ' ' + users[i].lastname;
+  }
+
+  throw '\''+ id +'\' is not valid assignee id.';
 }
 
 exports.open = function(id){

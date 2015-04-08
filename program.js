@@ -36,6 +36,7 @@ program
 program
   .command('issue <id>')
   .description('Display issue details.')
+  .option('-H, --history', 'Include issue history (may increase loading time).')
   .action(actions.handleIssue);
 
 program
@@ -52,6 +53,11 @@ program
   .command('priorities')
   .description('Display available priorities.')
   .action(actions.handlePriorities);
+
+program
+  .command('users')
+  .description('Display users (requires admin priviliges).')
+  .action(actions.handleUsers);
 
 program
   .command('open <id>')

@@ -1,0 +1,5 @@
+{% filter table(['ID', 'NAME', 'LOGIN', 'MAIL', 'CREATED', 'LAST LOGIN']) -%}
+{% for user in users -%}
+{{user.id}}|{{user.firstname}} {{user.lastname}}|{{user.login}}|{{user.mail}}|{{user.created_on|ago}}|{% if user.last_login_on %}{{user.last_login_on|ago}}{% else %}(never){% endif %}
+{% endfor -%}
+{% endfilter -%}

@@ -35,9 +35,9 @@ exports.handleIssues = function(options){
   } catch(err){console.error(err)}
 }
 
-exports.handleIssue = function(id){
+exports.handleIssue = function(id, options){
   try{
-    var issue = redmine.getIssue(id);
+    var issue = redmine.getIssue(id, options);
     printer.printIssue(issue.issue);
   } catch(err){console.error(err)}
 }
@@ -60,6 +60,13 @@ exports.handlePriorities = function(options){
   try{
     var priorities = redmine.getPriorities();
     printer.printPriorities(priorities);
+  } catch(err){console.error(err)}
+}
+
+exports.handleUsers = function(options){
+  try{
+    var users = redmine.getUsers();
+    printer.printUsers(users);
   } catch(err){console.error(err)}
 }
 

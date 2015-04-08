@@ -9,12 +9,12 @@ Added by {{author.name}} {{created_on|ago}}.{% if updated_on %} Updated {{update
 {% filter heading %}DESCRIPTION{% endfilter %}
 {{description|default('(no description set)')}}
 
-{% if journals.length > 0 -%}
+{%- if journals.length > 0 %}
 {% filter heading %}History{% endfilter %}
 {% for journal in journals %}
  * Updated by {{journal.user.name}} {{journal.created_on|ago}}.
    {% for detail in journal.details -%}
-   {{detail.name}} changed from {{detail.old_value}} to {{detail.new_value}}.
+   {{detail.name}} changed from '{{detail.old_value}}' to '{{detail.new_value}}'.
    {% endfor -%}
 {% endfor -%}
 {% else -%}

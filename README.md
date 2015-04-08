@@ -24,10 +24,11 @@ Commands:
   projects                Display projects.
   project <identifier>    Display project details.
   issues [options]        Display issues.
-  issue <id>              Display issue details.
+  issue [options] <id>    Display issue details.
   statuses                Display available issue statuses.
   trackers                Display available trackers.
   priorities              Display available priorities.
+  users                   Display users (requires admin priviliges).
   open <id>               Open issue in default browser.
 
 Options:
@@ -55,23 +56,59 @@ Or display the options of a certain command.
 ```
 
 ## Example
-Display all issues assigned to you.
+Display all issues assigned to you with status `New`.
 ```shell
->redmine issues --me
+>redmine issues --me --status=New
 ID  TRACKER  STATUS  PRIORITY  ASSIGNEE        SUBJECT
-#2  Bug      New     High      Admin Istrator  This is a bug. 
+#2  Bug      New     High      Admin Istrator  This is a bug.
 #1  Feature  New     Urgent    Admin Istrator  This is a feature.
 ```
+
+Display a certain issue with history.
+```shell
+>redmine issue 2 --history
+BUG #2
+This is a feature.
+Added by Admin Istrator a month ago. Updated a day ago.
+
+STATUS  PRIORITY  ASSIGNEE
+New     Normal    Admin Istrator
+
+DESCRIPTION
+This is a feature description.
+HISTORY
+ * Updated by Admin Istrator 21 days ago.
+   Status changed from 'In Progress' to 'New'.
+ * Updated by Admin Istrator 21 days ago.
+   Tracker changed from 'Feature' to 'Bug'.
+ * Updated by Admin Istrator 21 days ago.
+   Assignee changed from 'nobody' to 'John Doe'.
+ * Updated by Admin Istrator 14 days ago.
+   Assignee changed from 'John Doe' to 'Admin Istrator'.
+ * Updated by Admin Istrator a day ago.
+   Priority changed from 'High' to 'Normal'.
+```
+**Note:** In order to resolve some properties within the history, displaying an issue with history may take a few moments longer. If you are not interested in the history just skip the according option.
 
 ## Remark
 It's still under active development!
 
+## New in v0.6.0
+* Several improvements
+  * Memberlist in project details is now grouped by role
+  * Removed table borders to be able to display more actual data on screen
+  * Added bold formatting for section headers
+  * Connect command is now validating provided `url`and `apiKey`
+  * Enhanced some templates to either hide sections when no data is set or to display 'XX not set' message
+* New features
+  * Filters for issue list do now accept human readable names instead of internal ids
+  * Issue details may now also be displayed with issue history
+  * Added new 'users' command to display list of users
+* Fixes
+  * Fixed text of some error messages
+
 ## Roadmap
-* **v0.6.0** (due 2015-04-12)
-  * More connection options (noauth for public Redmines and username/password as alternative to apiKey)
-  * Textual filter paramter (`redmine issues --status=New --priority=High --tracker=Feature`)
-  * Enhanced project details (memberships are grouped by role, like in the web solution)
-  * Integration of issue history into issue-details
 * **v0.7.0** (due 2015-04-19)
   * Create issues/projects
   * Update issues/projects
+  * Display user details
