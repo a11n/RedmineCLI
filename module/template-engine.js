@@ -3,15 +3,15 @@ var moment = require('moment');
 var Table = require('cli-table');
 var colors = require('colors');
 
-swig.setFilter('ago', function (input) {
+var ago = function (input) {
   return moment(input).fromNow();
-});
+}
 
-swig.setFilter('heading', function (input) {
+var heading = function (input) {
   return input.toUpperCase().bold.underline;
-});
+};
 
-swig.setFilter('table', function (input, head) {
+var table = function (input, head) {
   var style =  { 'padding-left': 0, 'padding-right': 1, 'head': ['bold'] };
   var chars = { 'top': '' , 'top-mid': '' , 'top-left': '' , 'top-right': ''
          , 'bottom': '' , 'bottom-mid': '' , 'bottom-left': '' , 'bottom-right': ''
@@ -26,7 +26,13 @@ swig.setFilter('table', function (input, head) {
   }
 
   return table.toString();
-});
+}
+
+swig.setFilter('ago', ago);
+
+swig.setFilter('heading', heading);
+
+swig.setFilter('table', table);
 
 exports.renderFile = function(file, data){
   return swig.renderFile(file, data);
