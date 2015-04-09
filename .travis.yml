@@ -9,4 +9,4 @@ notifications:
 after_success:
   - pwd
   - ls -la ./node_modules/.bin/
-  - istanbul cover jasmine-node --captureExceptions spec/ && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
+  - istanbul cover ../jasmine-node/bin/jasmine-node --captureExceptions spec/ && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
