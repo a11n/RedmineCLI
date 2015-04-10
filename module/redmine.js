@@ -123,7 +123,7 @@ exports.getStatusIdByName = function(name){
       return statuses[i].id;
   }
 
-  throw '\''+ name +'\' is not valid status.';
+  throw '\''+ name +'\' is no valid status.';
 }
 
 exports.getStatusNameById = function(id){
@@ -133,7 +133,7 @@ exports.getStatusNameById = function(id){
       return statuses[i].name;
   }
 
-  throw '\''+ id +'\' is not valid status id.';
+  throw '\''+ id +'\' is no valid status id.';
 }
 
 exports.getTrackers = function(){
@@ -152,7 +152,7 @@ exports.getTrackerIdByName = function(name){
       return trackers[i].id;
   }
 
-  throw '\''+ name +'\' is not valid tracker.';
+  throw '\''+ name +'\' is no valid tracker.';
 }
 
 exports.getTrackerNameById = function(id){
@@ -162,7 +162,7 @@ exports.getTrackerNameById = function(id){
       return trackers[i].name;
   }
 
-  throw '\''+ id +'\' is not valid tracker id.';
+  throw '\''+ id +'\' is no valid tracker id.';
 }
 
 exports.getPriorities = function(){
@@ -181,7 +181,7 @@ exports.getPriorityIdByName = function(name){
       return priorities[i].id;
   }
 
-  throw '\''+ name +'\' is not valid priority.';
+  throw '\''+ name +'\' is no valid priority.';
 }
 
 exports.getPriorityNameById = function(id){
@@ -191,7 +191,7 @@ exports.getPriorityNameById = function(id){
       return priorities[i].name;
   }
 
-  throw '\''+ id +'\' is not valid priority id.';
+  throw '\''+ id +'\' is no valid priority id.';
 }
 
 exports.getUsers = function(){
@@ -210,7 +210,7 @@ exports.getAssigneeNameById = function(id){
       return users[i].firstname + ' ' + users[i].lastname;
   }
 
-  throw '\''+ id +'\' is not valid assignee id.';
+  throw '\''+ id +'\' is no valid assignee id.';
 }
 
 exports.open = function(id){

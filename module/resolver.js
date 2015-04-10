@@ -13,7 +13,7 @@ var getStatusNameById = function(id){
       return statuses[i].name;
   }
 
-  throw '\''+ id +'\' is not valid status id.';
+  throw '\''+ id +'\' is no valid status id.';
 }
 
 var getTrackerNameById = function(id){
@@ -23,7 +23,7 @@ var getTrackerNameById = function(id){
       return trackers[i].name;
   }
 
-  throw '\''+ id +'\' is not valid tracker id.';
+  throw '\''+ id +'\' is no valid tracker id.';
 }
 
 var getPriorityNameById = function(id){
@@ -33,7 +33,7 @@ var getPriorityNameById = function(id){
       return priorities[i].name;
   }
 
-  throw '\''+ id +'\' is not valid priority id.';
+  throw '\''+ id +'\' is no valid priority id.';
 }
 
 var getAssigneeNameById = function(id){
@@ -43,7 +43,7 @@ var getAssigneeNameById = function(id){
       return users[i].firstname + ' ' + users[i].lastname;
   }
 
-  throw '\''+ id +'\' is not valid assignee id.';
+  throw '\''+ id +'\' is no valid assignee id.';
 }
 
 exports.resolveHistoryIdsToNames = function(issue){
