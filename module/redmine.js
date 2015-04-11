@@ -1,6 +1,6 @@
 var request = require('sync-request');
 var nconf = require('nconf');
-var open = require('open');
+var openInBrowser = require('open');
 var querystring = require('querystring');
 var resolver = require('./resolver.js');
 
@@ -217,5 +217,5 @@ exports.open = function(id){
   throwWhenNotConnected();
 
   var url = nconf.get('serverUrl') + '/issues/' + id;
-  open(url);
+  openInBrowser(url);
 }
