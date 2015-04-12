@@ -34,6 +34,14 @@ describe('redmine.js', function() {
     expect(actual).toEqual(expected);
   });
 
+  it("should throw on invalid result", function() {
+    var user = {invalid: {}};
+    var response = { getBody : function(){return JSON.stringify(user)}};
+    redmine.__set__('get', function(){return response;});
+
+    expect(redmine.connect).toThrow();
+  });
+
   it("should get projects", function() {
     var projects = {projects: []};
     var response = { getBody : function(){return JSON.stringify(projects)}};
@@ -234,4 +242,102 @@ describe('redmine.js', function() {
     expect(openInBrowser).toHaveBeenCalledWith('url/issues/1');
   });
 
+  it('could not resolve status id by name', function(){
+    var statuses = {issue_statuses: []};
+    spyOn(redmine, 'getStatuses').andReturn(statuses);
+    expect(redmine.getStatusIdByName.bind(this, 'name'))
+      .toThrow('\'name\' is no valid status.');
+  });
+
+  it('could not resolve tracker id by name', function(){
+    var trackers = {trackers: []};
+    spyOn(redmine, 'getTrackers').andReturn(trackers);
+    expect(redmine.getTrackerIdByName.bind(this, 'name'))
+      .toThrow('\'name\' is no valid tracker.');
+  });
+
+  it('could not resolve priority id by name', function(){
+    var priorities = {issue_priorities: []};
+    spyOn(redmine, 'getPriorities').andReturn(priorities);
+    expect(redmine.getPriorityIdByName.bind(this, 'name'))
+      .toThrow('\'name\' is no valid priority.');
+  });
+
+  it('could not resolve status name by id', function(){
+    var statuses = {issue_statuses: []};
+    spyOn(redmine, 'getStatuses').andReturn(statuses);
+    expect(redmine.getStatusNameById.bind(this, 1))
+      .toThrow('\'1\' is no valid status id.');
+  });
+
+  it('could not resolve tracker name by id', function(){
+    var trackers = {trackers: []};
+    spyOn(redmine, 'getTrackers').andReturn(trackers);
+    expect(redmine.getTrackerNameById.bind(this, 1))
+      .toThrow('\'1\' is no valid tracker id.');
+  });
+
+  it('could not resolve priority name by id', function(){
+    var priorities = {issue_priorities: []};
+    spyOn(redmine, 'getPriorities').andReturn(priorities);
+    expect(redmine.getPriorityNameById.bind(this, 1))
+      .toThrow('\'1\' is no valid priority id.');
+  });
+
+  it('could not resolve assignee name by id', function(){
+    var users = {users: []};
+    spyOn(redmine, 'getUsers').andReturn(users);
+    expect(redmine.getAssigneeNameById.bind(this, 1))
+      .toThrow('\'1\' is no valid assignee id.');
+  });
+
+  describe('throws (on error in response)', function(){
+    var redmine = rewire("../module/redmine.js")
+
+    //before all
+    var response = { getBody : function(){return undefined;}};
+    redmine.__set__('get', function(){return response;});
+    redmine.__set__('throwWhenNotConnected', function(){});
+
+    it('could not connect', function(){
+      expect(redmine.connect.bind(this, 'server'))
+        .toThrow('Connection to \'server\' failed.');
+    });
+
+    it('could not load projects', function(){
+      expect(redmine.getProjects).toThrow('Could not load projects.');
+    });
+
+    it('could not load project', function(){
+      expect(redmine.getProject).toThrow('Could not load project.');
+    });
+
+    it('could not load issues', function(){
+      expect(redmine.getIssues).toThrow('Could not load issues.');
+    });
+
+    it('could not load issue', function(){
+      expect(redmine.getIssue.bind(this, 1, {history: true})).toThrow('Could not load issue.');
+    });
+
+    it('could not load project memberships', function(){
+      expect(redmine.getProjectMemberships).toThrow('Could not load project memberships.');
+    });
+
+    it('could not load statuses', function(){
+      expect(redmine.getStatuses).toThrow('Could not load issue statuses.');
+    });
+
+    it('could not load trackers', function(){
+      expect(redmine.getTrackers).toThrow('Could not load trackers.');
+    });
+
+    it('could not load priorities', function(){
+      expect(redmine.getPriorities).toThrow('Could not load issue priorities.');
+    });
+
+    it('could not load users', function(){
+      expect(redmine.getUsers).toThrow('Could not load users.');
+    });
+  });
 });
