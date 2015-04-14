@@ -28,6 +28,10 @@ var put = function(path, body){
   return req('PUT', null, null, path, {'json': body});
 }
 
+var post = function(path, body){
+  return req('POST', null, null, path, {'json': body});
+}
+
 exports.connect = function(serverUrl, apiKey){
   var response = get('/users/current.json', serverUrl, apiKey);
 
@@ -134,6 +138,29 @@ exports.updateIssue = function(id, options){
     if(response.statusCode != 200)
       throw 'Server responded with statuscode ' + response.statusCode;
   } catch(err) {throw 'Could not update issue. (' + err + ')'}
+}
+
+exports.createIssue = function(project, subject, options){
+  throwWhenNotConnected();
+
+  try{
+    var issue = {issue:{'project_id':project,'subject':subject}};
+
+    if(options.priority)
+      issue.issue.priority_id = exports.getPriorityIdByName(options.priority);
+    if(options.status)
+      issue.issue.status_id = exports.getStatusIdByName(options.status);
+    if(options.tracker)
+      issue.issue.tracker_id = exports.getTrackerIdByName(options.tracker);
+    if(options.description) issue.issue.description = options.description;
+
+    var response = post('/issues.json', issue);
+    if(response.statusCode != 201)
+      throw 'Server responded with statuscode ' + response.statusCode;
+
+    var issue = JSON.parse(response.getBody('utf8'));
+    return issue;
+  } catch(err) {throw 'Could not create issue. (' + err + ')'}
 }
 
 exports.getStatuses = function(){

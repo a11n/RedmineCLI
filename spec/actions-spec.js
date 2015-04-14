@@ -138,6 +138,27 @@ describe('actions.js', function() {
     expect(console.error).toHaveBeenCalledWith('error');
   });
 
+  it("should handle create issue", function() {
+    var options = {options: []};
+
+    spyOn(redmine, 'createIssue').andReturn({issue:{id:1}});
+    spyOn(console, 'log');
+
+    actions.handleCreateIssue('project', 'subject', options);
+
+    expect(redmine.createIssue).toHaveBeenCalledWith('project', 'subject', options);
+    expect(console.log).toHaveBeenCalledWith('Successfully created #1');
+  });
+
+  it("should handle create issue and catch error", function() {
+    spyOn(redmine, 'createIssue').andThrow('error');
+    spyOn(console, 'error');
+
+    actions.handleCreateIssue();
+
+    expect(console.error).toHaveBeenCalledWith('error');
+  });
+
   it("should handle statuses", function() {
     var statuses = {statuses: []};
 

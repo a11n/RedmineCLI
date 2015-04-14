@@ -49,6 +49,13 @@ exports.handleUpdateIssue = function(id, options){
   } catch(err){console.error(err)}
 }
 
+exports.handleCreateIssue = function(project, subject, options){
+  try{
+    var issue = redmine.createIssue(project, subject, options);
+    console.log('Successfully created #' + issue.issue.id);
+  } catch(err){console.error(err)}
+}
+
 exports.handleStatuses = function(options){
   try{
     var statuses = redmine.getStatuses();

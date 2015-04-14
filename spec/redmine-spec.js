@@ -35,6 +35,18 @@ describe('redmine.js', function() {
     expect(actual).toEqual(expected);
   });
 
+  it("should post data to path", function() {
+    var post = redmine.__get__('post');
+
+    var request = function(){return 'data'};
+    redmine.__set__('request', request);
+
+    var actual = post('/path', {data: 'data'});
+    var expected = 'data';
+
+    expect(actual).toEqual(expected);
+  });
+
   it("should connect", function() {
     var user = {user: {}};
     var response = { getBody : function(){return JSON.stringify(user)}};
@@ -157,6 +169,40 @@ describe('redmine.js', function() {
     expect(redmine.updateIssue.bind(this, 1, options))
       .toThrow('Could not update issue. (Server responded with statuscode 500)');
   });
+
+  it("should create issue", function() {
+    var issue = {issue:{id:1}};
+    var post = jasmine.createSpy('post');
+    post.andReturn({statusCode:201,
+                    getBody: function(){return JSON.stringify(issue)}});
+    redmine.__set__('post', post);
+
+    spyOn(redmine, 'getPriorityIdByName').andReturn(1);
+    spyOn(redmine, 'getStatusIdByName').andReturn(1);
+    spyOn(redmine, 'getTrackerIdByName').andReturn(1);
+
+    var options = {
+      priority: 'High', status: 'New', tracker: 'Bug',
+      description: 'Description'
+    };
+
+    var actual = redmine.createIssue('project', 'subject', options);
+    var expected = issue;
+
+    expect(actual).toEqual(expected);
+  });
+
+  it("should create issue and throw error", function() {
+    var post = jasmine.createSpy('post');
+    post.andReturn({statusCode:500});
+    redmine.__set__('post', post);
+
+    var options = {};
+
+    expect(redmine.createIssue.bind(this, 'project', 'subject', options))
+      .toThrow('Could not create issue. (Server responded with statuscode 500)');
+  });
+
 
   it("should get statuses", function() {
     var statuses = {issue_statuses: []};

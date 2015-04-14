@@ -25,7 +25,7 @@ program
   .description('Display issues.')
   .option('-p, --project <project>', 'Only display issues for the specified project.')
   .option('-P, --priority <priority>', 'Only display issues with specified priority.')
-//.option('-a, --assignee <assignee>', 'Only display issues for the specified assignee.')
+  .option('-a, --assignee <assignee>', 'Only display issues for the specified assignee.')
   .option('-s, --status <status>', 'Only display issues with the specified status.')
   .option('-t, --tracker <tracker>', 'Only display issues for the specified tracker.')
   .option('-m, --me', 'Only display issues assigned to me.')
@@ -43,12 +43,22 @@ program
   .command('update-issue <id>')
   .description('Update the specified issue.')
   .option('-P, --priority <priority>', 'Update the priority.')
-  .option('-a, --assignee <assignee>', 'Update the assignee.')
+//.option('-a, --assignee <assignee>', 'Update the assignee.')
   .option('-s, --status <status>', 'Update the status.')
   .option('-t, --tracker <tracker>', 'Update the tracker.')
   .option('-S, --subject <subject>', 'Update the subject.')
   .option('-d, --description <description>', 'Update the description.')
   .action(actions.handleUpdateIssue);
+
+program
+  .command('create-issue <project> <subject>')
+  .description('Create a new issue.')
+  .option('-P, --priority <priority>', 'Update the priority.')
+//.option('-a, --assignee <assignee>', 'Update the assignee.')
+  .option('-s, --status <status>', 'Update the status.')
+  .option('-t, --tracker <tracker>', 'Update the tracker.')
+  .option('-d, --description <description>', 'Update the description.')
+  .action(actions.handleCreateIssue);
 
 program
   .command('statuses')
