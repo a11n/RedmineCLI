@@ -23,6 +23,18 @@ describe('redmine.js', function() {
     expect(actual).toEqual(expected);
   });
 
+  it("should put data to path", function() {
+    var put = redmine.__get__('put');
+
+    var request = function(){return 'data'};
+    redmine.__set__('request', request);
+
+    var actual = put('/path', {data: 'data'});
+    var expected = 'data';
+
+    expect(actual).toEqual(expected);
+  });
+
   it("should connect", function() {
     var user = {user: {}};
     var response = { getBody : function(){return JSON.stringify(user)}};
@@ -114,6 +126,36 @@ describe('redmine.js', function() {
     var expected = issue;
 
     expect(actual).toEqual(expected);
+  });
+
+  it("should update issue", function() {
+    var put = jasmine.createSpy('put');
+    put.andReturn({statusCode:200});
+    redmine.__set__('put', put);
+
+    spyOn(redmine, 'getPriorityIdByName').andReturn(1);
+    spyOn(redmine, 'getStatusIdByName').andReturn(1);
+    spyOn(redmine, 'getTrackerIdByName').andReturn(1);
+
+    var options = {
+      priority: 'High', status: 'New', tracker: 'Bug',
+      subject: 'Subject', description: 'Description'
+    };
+
+    redmine.updateIssue(1, options);
+
+    expect(put).toHaveBeenCalled();
+  });
+
+  it("should update issue and throw error", function() {
+    var put = jasmine.createSpy('put');
+    put.andReturn({statusCode:500});
+    redmine.__set__('put', put);
+
+    var options = {};
+
+    expect(redmine.updateIssue.bind(this, 1, options))
+      .toThrow('Could not update issue. (Server responded with statuscode 500)');
   });
 
   it("should get statuses", function() {

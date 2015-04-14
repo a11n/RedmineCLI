@@ -117,6 +117,27 @@ describe('actions.js', function() {
     expect(console.error).toHaveBeenCalledWith('error');
   });
 
+  it("should handle update issue", function() {
+    var options = {options: []};
+
+    spyOn(redmine, 'updateIssue');
+    spyOn(console, 'log');
+
+    actions.handleUpdateIssue('id', options);
+
+    expect(redmine.updateIssue).toHaveBeenCalledWith('id', options);
+    expect(console.log).toHaveBeenCalledWith('Successfully updated #id');
+  });
+
+  it("should handle update issue and catch error", function() {
+    spyOn(redmine, 'updateIssue').andThrow('error');
+    spyOn(console, 'error');
+
+    actions.handleUpdateIssue();
+
+    expect(console.error).toHaveBeenCalledWith('error');
+  });
+
   it("should handle statuses", function() {
     var statuses = {statuses: []};
 

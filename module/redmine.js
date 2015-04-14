@@ -11,13 +11,21 @@ var throwWhenNotConnected = function(){
     throw 'Not connected.'
 }
 
-var get = function(path, serverUrl, apiKey){
+var req = function(method, serverUrl, apiKey, path, options){
   serverUrl = serverUrl || nconf.get('serverUrl');
   apiKey = apiKey || nconf.get('apiKey');
 
   var url = serverUrl + path;
-  var options = { headers: {'X-Redmine-API-Key': apiKey}};
-  return request('GET', url, options);
+  options.headers = {'X-Redmine-API-Key': apiKey};
+  return request(method, url, options);
+}
+
+var get = function(path, serverUrl, apiKey){
+  return req('GET', serverUrl, apiKey, path, {});
+}
+
+var put = function(path, body){
+  return req('PUT', null, null, path, {'json': body});
 }
 
 exports.connect = function(serverUrl, apiKey){
@@ -105,6 +113,27 @@ exports.getIssue = function(id, options){
 
     return issue;
   } catch(err) {throw 'Could not load issue.'}
+}
+
+exports.updateIssue = function(id, options){
+  throwWhenNotConnected();
+
+  try{
+    var issue = {issue:{}};
+
+    if(options.priority)
+      issue.issue.priority_id = exports.getPriorityIdByName(options.priority);
+    if(options.status)
+      issue.issue.status_id = exports.getStatusIdByName(options.status);
+    if(options.tracker)
+      issue.issue.tracker_id = exports.getTrackerIdByName(options.tracker);
+    if(options.subject) issue.issue.subject = options.subject;
+    if(options.description) issue.issue.description = options.description;
+
+    var response = put('/issues/' + id + '.json', issue);
+    if(response.statusCode != 200)
+      throw 'Server responded with statuscode ' + response.statusCode;
+  } catch(err) {throw 'Could not update issue. (' + err + ')'}
 }
 
 exports.getStatuses = function(){
