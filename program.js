@@ -53,11 +53,11 @@ program
 program
   .command('create-issue <project> <subject>')
   .description('Create a new issue.')
-  .option('-P, --priority <priority>', 'Update the priority.')
+  .option('-P, --priority <priority>', 'Create with priority.')
 //.option('-a, --assignee <assignee>', 'Update the assignee.')
-  .option('-s, --status <status>', 'Update the status.')
-  .option('-t, --tracker <tracker>', 'Update the tracker.')
-  .option('-d, --description <description>', 'Update the description.')
+  .option('-s, --status <status>', 'Create with status.')
+  .option('-t, --tracker <tracker>', 'Create with tracker.')
+  .option('-d, --description <description>', 'Create with description.')
   .action(actions.handleCreateIssue);
 
 program
