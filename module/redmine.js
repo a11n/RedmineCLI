@@ -137,7 +137,7 @@ exports.updateIssue = function(id, options){
     var response = put('/issues/' + id + '.json', issue);
     if(response.statusCode != 200)
       throw 'Server responded with statuscode ' + response.statusCode;
-  } catch(err) {throw 'Could not update issue. (' + err + ')'}
+  } catch(err) {throw 'Could not update issue:\n' + err }
 }
 
 exports.createIssue = function(project, subject, options){
@@ -155,12 +155,18 @@ exports.createIssue = function(project, subject, options){
     if(options.description) issue.issue.description = options.description;
 
     var response = post('/issues.json', issue);
-    if(response.statusCode != 201)
+
+    if(response.statusCode == 404){
+      throw 'Server responded with statuscode 404.\n' +
+            'This is most likely the case when the specified project does not exist.\n' +
+            'Does project \''+ project +'\' exist?';
+    }
+    else if(response.statusCode != 201)
       throw 'Server responded with statuscode ' + response.statusCode;
 
     var issue = JSON.parse(response.getBody('utf8'));
     return issue;
-  } catch(err) {throw 'Could not create issue. (' + err + ')'}
+  } catch(err) {throw 'Could not create issue:\n' + err}
 }
 
 exports.getStatuses = function(){

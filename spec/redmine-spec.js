@@ -167,7 +167,7 @@ describe('redmine.js', function() {
     var options = {};
 
     expect(redmine.updateIssue.bind(this, 1, options))
-      .toThrow('Could not update issue. (Server responded with statuscode 500)');
+      .toThrow('Could not update issue:\nServer responded with statuscode 500');
   });
 
   it("should create issue", function() {
@@ -192,6 +192,17 @@ describe('redmine.js', function() {
     expect(actual).toEqual(expected);
   });
 
+  it("should create issue and warn on 404", function() {
+    var post = jasmine.createSpy('post');
+    post.andReturn({statusCode:404});
+    redmine.__set__('post', post);
+
+    var options = {};
+
+    expect(redmine.createIssue.bind(this, 'project', 'subject', options))
+      .toThrow('Could not create issue:\nServer responded with statuscode 404.\nThis is most likely the case when the specified project does not exist.\nDoes project \'project\' exist?');
+  });
+
   it("should create issue and throw error", function() {
     var post = jasmine.createSpy('post');
     post.andReturn({statusCode:500});
@@ -200,7 +211,7 @@ describe('redmine.js', function() {
     var options = {};
 
     expect(redmine.createIssue.bind(this, 'project', 'subject', options))
-      .toThrow('Could not create issue. (Server responded with statuscode 500)');
+      .toThrow('Could not create issue:\nServer responded with statuscode 500');
   });
 
 
