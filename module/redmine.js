@@ -4,7 +4,7 @@ var openInBrowser = require('open');
 var querystring = require('querystring');
 var resolver = require('./resolver.js');
 
-nconf.file('config.json');
+nconf.file(__dirname + '/../config.json');
 
 var throwWhenNotConnected = function(){
   if(!nconf.get('serverUrl') || !nconf.get('apiKey'))
