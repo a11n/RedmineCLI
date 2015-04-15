@@ -35,5 +35,6 @@ swig.setFilter('heading', heading);
 swig.setFilter('table', table);
 
 exports.renderFile = function(file, data){
+  file = __dirname + '/../' + file;
   return swig.renderFile(file, data);
 };
