@@ -11,6 +11,7 @@ describe('template-engine.js', function() {
     spyOn(swig, 'renderFile').andReturn('out');
 
     var out = tmpl.renderFile(file, data);
+    file = __dirname.substring(0, __dirname.length - 4) + 'module/../' + file;
 
     expect(swig.renderFile).toHaveBeenCalledWith(file, data);
     expect(out).toEqual(out);
