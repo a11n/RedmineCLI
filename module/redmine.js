@@ -265,6 +265,15 @@ exports.getUsers = function(){
   } catch(err) {throw 'Could not load users.'}
 }
 
+exports.getUser = function(id){
+  throwWhenNotConnected();
+
+  var response = get('/users/' + id + '.json?include=memberships');
+  try{
+    return JSON.parse(response.getBody('utf8'));
+  } catch(err) {throw 'Could not load user.'}
+}
+
 exports.getAssigneeNameById = function(id){
   var users = exports.getUsers().users;
   for(var i = 0; i < users.length; i++){

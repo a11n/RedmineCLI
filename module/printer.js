@@ -43,3 +43,8 @@ exports.printUsers = function(users){
   var out = tmpl.renderFile('template/users.tmpl', users);
   console.log(out);
 }
+
+exports.printUser = function(user){
+  var out = tmpl.renderFile('template/user.tmpl', user);
+  console.log(out);
+}

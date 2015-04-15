@@ -84,6 +84,13 @@ exports.handleUsers = function(options){
   } catch(err){console.error(err)}
 }
 
+exports.handleUser = function(id){
+  try{
+    var user = redmine.getUser(id);
+    printer.printUser(user.user);
+  } catch(err){console.error(err)}
+}
+
 exports.handleOpen = function(id){
   try{
     redmine.open(id);

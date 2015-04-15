@@ -1,0 +1,19 @@
+{% filter heading %}{{firstname}} {{lastname}}{% endfilter %}
+{% filter table -%}
+Login|{{login}}
+Mail|{{mail}}
+API key|{{api_key}}
+Created|{{created_on|ago}}
+Last login|{% if last_login_on %}{{last_login_on|ago}}{% else %}(never){% endif %}
+{% endfilter %}
+
+{% filter heading %}Memberships{% endfilter %}
+{% if memberships.length > 0 -%}
+{% filter table(['PROJECT', 'ROLE(S)']) -%}
+{% for membership in memberships -%}
+{{membership.project.name}}|{% for role in membership.roles %}{% if !loop.first %}, {% endif %}{{role.name}}{% endfor %}
+{% endfor -%}
+{% endfilter -%}
+{% else -%}
+(no memberships)
+{% endif %}

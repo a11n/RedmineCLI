@@ -80,6 +80,11 @@ program
   .description('Display users (requires admin priviliges).')
   .action(actions.handleUsers);
 
+  program
+    .command('user <id>')
+    .description('Display user details (requires admin priviliges).')
+    .action(actions.handleUser);
+
 program
   .command('open <id>')
   .description('Open issue in default browser.')
