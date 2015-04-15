@@ -52,10 +52,14 @@ describe('redmine.js', function() {
     var response = { getBody : function(){return JSON.stringify(user)}};
     redmine.__set__('get', function(){return response;});
 
+    var nconf = redmine.__get__('nconf');
+    spyOn(nconf, 'save');
+
     var actual = redmine.connect('url', 'apiKey');
     var expected = user.user;
 
     expect(actual).toEqual(expected);
+    expect(nconf.save).toHaveBeenCalled();
   });
 
   it("should throw on invalid result", function() {
