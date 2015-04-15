@@ -118,4 +118,17 @@ describe('printer.js', function() {
     expect(console.log).toHaveBeenCalledWith(out);
   });
 
+  it("should print user", function() {
+    var user = {user: {}};
+    var out = 'output';
+
+    spyOn(tmpl, 'renderFile').andReturn(out);
+    spyOn(console, 'log');
+
+    printer.printUser(user);
+
+    expect(tmpl.renderFile).toHaveBeenCalledWith('template/user.tmpl', user);
+    expect(console.log).toHaveBeenCalledWith(out);
+  });
+
 });

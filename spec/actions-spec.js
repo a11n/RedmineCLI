@@ -243,6 +243,27 @@ describe('actions.js', function() {
     expect(console.error).toHaveBeenCalledWith('error');
   });
 
+  it("should handle user", function() {
+    var user = {user: {}};
+
+    spyOn(redmine, 'getUser').andReturn(user);
+    spyOn(printer, 'printUser');
+
+    actions.handleUser();
+
+    expect(redmine.getUser).toHaveBeenCalled();
+    expect(printer.printUser).toHaveBeenCalledWith(user.user);
+  });
+
+  it("should handle user and catch error", function() {
+    spyOn(redmine, 'getUser').andThrow('error');
+    spyOn(console, 'error');
+
+    actions.handleUser();
+
+    expect(console.error).toHaveBeenCalledWith('error');
+  });
+
   it("should handle open", function() {
     var projects = {projects: []};
 

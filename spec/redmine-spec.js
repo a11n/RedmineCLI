@@ -319,6 +319,17 @@ describe('redmine.js', function() {
     expect(actual).toEqual(expected);
   });
 
+  it("should get user", function() {
+    var user = {user: {}};
+    var response = { getBody : function(){return JSON.stringify(user)}};
+    redmine.__set__('get', function(){return response;});
+
+    var actual = redmine.getUser();
+    var expected = user;
+
+    expect(actual).toEqual(expected);
+  });
+
   it("should get assignee name by id", function() {
     var users = {users: [{id:1, firstname: 'first', lastname: 'last'}]};
     spyOn(redmine, 'getUsers').andReturn(users);
@@ -437,6 +448,10 @@ describe('redmine.js', function() {
 
     it('could not load users', function(){
       expect(redmine.getUsers).toThrow('Could not load users.');
+    });
+
+    it('could not load user', function(){
+      expect(redmine.getUser).toThrow('Could not load user.');
     });
   });
 });
