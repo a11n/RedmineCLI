@@ -20,16 +20,18 @@ Display available commands and options.
 Usage: redmine [options] [command]
 
 Commands:
-  connect <url> <apiKey>  Connect to server using API key for authentication.
-  projects                Display projects.
-  project <identifier>    Display project details.
-  issues [options]        Display issues.
-  issue [options] <id>    Display issue details.
-  statuses                Display available issue statuses.
-  trackers                Display available trackers.
-  priorities              Display available priorities.
-  users                   Display users (requires admin priviliges).
-  open <id>               Open issue in default browser.
+connect <url> <apiKey>                      Connect to server using API key for authentication.
+projects                                    Display projects.
+project <identifier>                        Display project details.
+issues [options]                            Display issues.
+issue [options] <id>                        Display issue details.
+update-issue [options] <id>                 Update the specified issue.
+create-issue [options] <project> <subject>  Create a new issue.
+statuses                                    Display available issue statuses.
+trackers                                    Display available trackers.
+priorities                                  Display available priorities.
+users                                       Display users (requires admin priviliges).
+open <id>                                   Open issue in default browser.
 
 Options:
   -h, --help     output usage information
@@ -91,7 +93,15 @@ HISTORY
 **Note:** In order to resolve some properties within the history, displaying an issue with history may take a few moments longer. If you are not interested in the history just skip the according option.
 
 ## Remark
-It's still under active development!
+It's still under ~~active~~ development!
+
+## New in v0.7.0
+* New features
+  * Update Issues
+  * Create Issues
+  * Display user details
+* Improved stability
+  * 100% test coverage
 
 ## New in v0.6.0
 * Several improvements
@@ -108,7 +118,5 @@ It's still under active development!
   * Fixed text of some error messages
 
 ## Roadmap
-* **v0.7.0** (due 2015-04-19)
-  * Create issues/projects
-  * Update issues/projects
-  * Display user details
+* **v0.8.0** (due 2015-??-??)
+  * ???
