@@ -154,7 +154,7 @@ describe('redmine.js', function() {
     spyOn(redmine, 'getTrackerIdByName').andReturn(1);
 
     var options = {
-      priority: 'High', status: 'New', tracker: 'Bug',
+      priority: 'High', status: 'New', tracker: 'Bug', assignee: 1,
       subject: 'Subject', description: 'Description'
     };
 
@@ -187,7 +187,7 @@ describe('redmine.js', function() {
 
     var options = {
       priority: 'High', status: 'New', tracker: 'Bug',
-      description: 'Description'
+      assignee: 1, description: 'Description'
     };
 
     var actual = redmine.createIssue('project', 'subject', options);
