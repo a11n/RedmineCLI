@@ -92,6 +92,34 @@ describe('redmine.js', function() {
     expect(actual).toEqual(expected);
   });
 
+  it("should create project", function() {
+    var project = {project:{identifier:'project'}};
+    var post = jasmine.createSpy('post');
+    post.andReturn({statusCode:201,
+                    getBody: function(){return JSON.stringify(project)}});
+    redmine.__set__('post', post);
+
+    var options = {
+      description: 'Description', public: true, parent: '1'
+    };
+
+    var actual = redmine.createProject('name', 'identifier', options);
+    var expected = project;
+
+    expect(actual).toEqual(expected);
+  });
+
+  it("should create project and throw error", function() {
+    var post = jasmine.createSpy('post');
+    post.andReturn({statusCode:500});
+    redmine.__set__('post', post);
+
+    var options = {};
+
+    expect(redmine.createProject.bind(this, 'name', 'identifier', options))
+      .toThrow('Could not create project:\nServer responded with statuscode 500');
+  });
+
   it("should get project memberships", function() {
     var memberships = {memberships: []};
     var response = { getBody : function(){return JSON.stringify(memberships)}};

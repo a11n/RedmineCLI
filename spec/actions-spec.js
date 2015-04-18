@@ -72,6 +72,27 @@ describe('actions.js', function() {
     expect(console.error).toHaveBeenCalledWith('error');
   });
 
+  it("should handle create project", function() {
+    var options = {options: []};
+
+    spyOn(redmine, 'createProject').andReturn({project:{identifier:'project'}});
+    spyOn(console, 'log');
+
+    actions.handleCreateProject('name', 'identifier', options);
+
+    expect(redmine.createProject).toHaveBeenCalledWith('name', 'identifier', options);
+    expect(console.log).toHaveBeenCalledWith('Successfully created project');
+  });
+
+  it("should handle create project and catch error", function() {
+    spyOn(redmine, 'createProject').andThrow('error');
+    spyOn(console, 'error');
+
+    actions.handleCreateProject();
+
+    expect(console.error).toHaveBeenCalledWith('error');
+  });
+
   it("should handle issues", function() {
     var issues = {issues: []};
     var filters = [{}];
