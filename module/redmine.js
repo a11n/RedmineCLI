@@ -69,6 +69,28 @@ exports.getProject = function(identifier){
   } catch(err) {throw 'Could not load project.'}
 }
 
+exports.createProject = function(name, identifier, options){
+  throwWhenNotConnected();
+
+  try{
+    var project = {project:{'name':name,'identifier':identifier}};
+
+    if(options.description) project.project.description = options.description;
+    if(options.public) project.project.is_public = true;
+    else project.project.is_public = false;
+    if(options.parent && typeof options.parent == 'string')
+      project.project.parent_id = options.parent;
+
+    var response = post('/projects.json', project);
+
+    if(response.statusCode != 201)
+      throw 'Server responded with statuscode ' + response.statusCode;
+
+    var project = JSON.parse(response.getBody('utf8'));
+    return project;
+  } catch(err) {throw 'Could not create project:\n' + err}
+}
+
 exports.getProjectMemberships = function(identifier){
   throwWhenNotConnected();
 

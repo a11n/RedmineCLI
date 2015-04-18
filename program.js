@@ -21,6 +21,14 @@ program
   .action(actions.handleProject);
 
 program
+  .command('create-project <name> <identifier>')
+  .description('Create a new project.')
+  .option('-d, --description <description>', 'Create with description.')
+  .option('-p, --public', 'Create public (default is private).')
+  .option('-P, --parent <id>', 'Create as child project.')
+  .action(actions.handleCreateProject);
+
+program
   .command('issues')
   .description('Display issues.')
   .option('-p, --project <project>', 'Only display issues for the specified project.')

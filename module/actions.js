@@ -27,6 +27,13 @@ exports.handleProject = function(identifier){
   } catch(err){console.error(err)}
 }
 
+exports.handleCreateProject = function(name, identifier, options){
+  try{
+    var project = redmine.createProject(name, identifier, options);
+    console.log('Successfully created ' + project.project.identifier);
+  } catch(err){console.error(err)}
+}
+
 exports.handleIssues = function(options){
   try{
     var filters = filter.issuesFiltersFrom(options);
