@@ -21,6 +21,14 @@ program
   .action(actions.handleProject);
 
 program
+  .command('update-project <identifier>')
+  .description('Update the specified project.')
+  .option('-d, --description <description>', 'Update description.')
+  .option('-p, --public <boolean>', 'Update visibility.')
+  .option('-P, --parent <id>', 'Update parent project.')
+  .action(actions.handleUpdateProject);
+
+program
   .command('create-project <name> <identifier>')
   .description('Create a new project.')
   .option('-d, --description <description>', 'Create with description.')
