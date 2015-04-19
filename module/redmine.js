@@ -84,7 +84,7 @@ exports.updateProject = function(identifier, options){
     if(response.statusCode != 200)
       throw 'Server responded with statuscode ' + response.statusCode;
 
-  } catch(err) {throw 'Could not create project:\n' + err}
+  } catch(err) {throw 'Could not update project:\n' + err}
 }
 
 exports.createProject = function(name, identifier, options){
