@@ -92,6 +92,29 @@ describe('redmine.js', function() {
     expect(actual).toEqual(expected);
   });
 
+  it("should update project", function() {
+    var put = jasmine.createSpy('post');
+    put.andReturn({statusCode:200});
+    redmine.__set__('put', put);
+
+    var options = {
+      description: 'Description', public: true, parent: '1'
+    };
+
+    redmine.updateProject('identifier', options);
+  });
+
+  it("should update project and throw error", function() {
+    var put = jasmine.createSpy('post');
+    put.andReturn({statusCode:500});
+    redmine.__set__('put', put);
+
+    var options = {};
+
+    expect(redmine.updateProject.bind(this, 'identifier', options))
+      .toThrow('Could not update project:\nServer responded with statuscode 500');
+  });
+
   it("should create project", function() {
     var project = {project:{identifier:'project'}};
     var post = jasmine.createSpy('post');
