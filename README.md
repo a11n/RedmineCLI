@@ -20,18 +20,22 @@ Display available commands and options.
 Usage: redmine [options] [command]
 
 Commands:
-connect <url> <apiKey>                      Connect to server using API key for authentication.
-projects                                    Display projects.
-project <identifier>                        Display project details.
-issues [options]                            Display issues.
-issue [options] <id>                        Display issue details.
-update-issue [options] <id>                 Update the specified issue.
-create-issue [options] <project> <subject>  Create a new issue.
-statuses                                    Display available issue statuses.
-trackers                                    Display available trackers.
-priorities                                  Display available priorities.
-users                                       Display users (requires admin priviliges).
-open <id>                                   Open issue in default browser.
+connect <url> <apiKey>                        Connect to server using API key for authentication.
+projects                                      Display projects.
+project <identifier>                          Display project details.
+update-project [options] <identifier>         Update the specified project.
+create-project [options] <name> <identifier>  Create a new project.
+issues [options]                              Display issues.
+issue [options] <id>                          Display issue details.
+update-issue [options] <id>                   Update the specified issue.
+create-issue [options] <project> <subject>    Create a new issue.
+statuses                                      Display available issue statuses.
+trackers                                      Display available trackers.
+priorities                                    Display available priorities.
+users                                         Display users (requires admin priviliges).
+user <id>                                     Display user details (requires admin priviliges).
+open <id>                                     Open issue in default browser.
+
 
 Options:
   -h, --help     output usage information
@@ -95,7 +99,13 @@ HISTORY
 ## Remark
 It's still under ~~active~~ development!
 
-## New in v0.7.0
+## Changelog
+### v0.8.0
+* New features
+ * Update projects
+ * Create projects
+
+### v0.7.0
 * New features
   * Update Issues
   * Create Issues
@@ -103,7 +113,7 @@ It's still under ~~active~~ development!
 * Improved stability
   * 100% test coverage
 
-## New in v0.6.0
+### v0.6.0
 * Several improvements
   * Memberlist in project details is now grouped by role
   * Removed table borders to be able to display more actual data on screen
@@ -116,7 +126,3 @@ It's still under ~~active~~ development!
   * Added new 'users' command to display list of users
 * Fixes
   * Fixed text of some error messages
-
-## Roadmap
-* **v0.8.0** (due 2015-??-??)
-  * ???
