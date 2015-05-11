@@ -7,6 +7,10 @@ var ago = function (input) {
   return moment(input).fromNow();
 }
 
+var bold = function (input) {
+  return input.bold;
+}
+
 var heading = function (input) {
   return input.toUpperCase().bold.underline;
 };
@@ -29,6 +33,8 @@ var table = function (input, head) {
 }
 
 swig.setFilter('ago', ago);
+
+swig.setFilter('bold', bold);
 
 swig.setFilter('heading', heading);
 
