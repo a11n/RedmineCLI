@@ -6,7 +6,7 @@ Added by {% filter bold %}{{author.name}}{% endfilter %} {{created_on|ago}}.{% i
 {% filter bold %}Status:{% endfilter %}|{{status.name}}|{% filter bold %}Start date:{% endfilter %}|{{start_date|default('--')}}
 {% filter bold %}Priority:{% endfilter %}|{{priority.name}}|{% filter bold %}Due date:{% endfilter %}|{{due_date|default('--')}}
 {% filter bold %}Assignee:{% endfilter %}|{{assigned_to.name|default('(not assigned)')}}|{% filter bold %}Done:{% endfilter %}|{{done_ratio}}%
-{% filter bold %}Estimated time:{% endfilter %}|{{estimated_hours|default('--')}}{% if estimated_hours %} hours{% endif %}|{% filter bold %}Spent time:{% endfilter %}|{{spent_hours}} hour(s)
+{% filter bold %}Estimated time:{% endfilter %}|{{estimated_hours|default('--')}}{% if estimated_hours %} hours{% endif %}|{% filter bold %}Spent time:{% endfilter %}|{{spent_hours|default('--')}}{% if spent_hours %} hour(s){% endif %}
 {% endfilter %}
 
 {% filter heading %}DESCRIPTION{% endfilter %}

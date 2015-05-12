@@ -34,6 +34,19 @@ describe('template-engine.js', function() {
     expect(actual).toEqual('a year ago');
   });
 
+  it('should convert input to bold', function(){
+    var colors = require('colors');
+    var bold = tmpl.__get__('bold');
+
+    var input = 'bold';
+
+    var actual = bold(input);
+
+    var expected = input.bold;
+
+    expect(actual).toEqual(expected);
+  });
+
   it('should convert input to heading', function(){
     var colors = require('colors');
     var heading = tmpl.__get__('heading');
