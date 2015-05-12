@@ -104,6 +104,8 @@ It's still under ~~active~~ development!
 * New features
  * Update projects
  * Create projects
+* Improvements
+ * Extended issue details
 
 ### v0.7.0
 * New features
