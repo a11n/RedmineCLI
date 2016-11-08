@@ -70,6 +70,7 @@ program
   .command('create-issue <project> <subject>')
   .description('Create a new issue.')
   .option('-P, --priority <priority>', 'Create with priority.')
+  .option('-p, --parent <parent_issue_id>', 'Create with parent task id.')
   .option('-a, --assignee <userId>', 'Create with assignee.')
   .option('-s, --status <status>', 'Create with status.')
   .option('-t, --tracker <tracker>', 'Create with tracker.')
