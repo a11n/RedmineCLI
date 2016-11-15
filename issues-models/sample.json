@@ -1,7 +1,4 @@
 {
-  // all properties are optional
-  // available properties are: 
-  //       assignee, description, estimated, parent, priority, status, subject and tracker
   "globals": {
     "priority": "Normal",
     "estimated": 1, 
