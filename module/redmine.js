@@ -190,6 +190,7 @@ exports.createIssue = function(project, subject, options){
     if(options.priority)
       issue.issue.priority_id = exports.getPriorityIdByName(options.priority);
     if(options.assignee) issue.issue.assigned_to_id = options.assignee;
+    if(options.parent && typeof options.parent == 'string') issue.issue.parent_issue_id = options.parent;
     if(options.status)
       issue.issue.status_id = exports.getStatusIdByName(options.status);
     if(options.tracker)
