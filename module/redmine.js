@@ -192,6 +192,7 @@ exports.createIssue = function(project, subject, options){
     if(options.assignee) issue.issue.assigned_to_id = options.assignee;
     if(options.status)
       issue.issue.status_id = exports.getStatusIdByName(options.status);
+    if(options.estimated) issue.issue.estimated_hours = options.estimated;
     if(options.tracker)
       issue.issue.tracker_id = exports.getTrackerIdByName(options.tracker);
     if(options.description) issue.issue.description = options.description;

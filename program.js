@@ -73,6 +73,7 @@ program
   .option('-a, --assignee <userId>', 'Create with assignee.')
   .option('-s, --status <status>', 'Create with status.')
   .option('-t, --tracker <tracker>', 'Create with tracker.')
+  .option('-e, --estimated <estimated_hours>', 'Create with estimated hours.')
   .option('-d, --description <description>', 'Create with description.')
   .action(actions.handleCreateIssue);
 
