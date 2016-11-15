@@ -70,6 +70,34 @@ exports.handleCreateIssue = function(project, subject, options){
   } catch(err){console.error(err)}
 }
 
+exports.handleImportModel = function (file_path, model, options){
+  try {
+    redmine.importModel(file_path, model, options);
+
+    console.log('Model successfully imported: ' + model);
+  } catch(err){console.error(err)}
+}
+
+exports.handleRemoveModel = function (model){
+  try {
+    redmine.removeModel(model);
+    console.log('Model successfully removed: ' + model);
+  } catch(err){console.error(err)}
+}
+
+exports.handleListModels = function (model){
+  try {
+    redmine.listModels();
+  } catch(err){console.error(err)}
+}
+
+exports.handleGenerateIssues = function(project, model, options){
+  try{
+    var issues = redmine.generateIssues(project, model, options);
+    console.log('Successfully generated issues ' + issues.join(', '));
+  } catch(err){console.error(err)}
+}
+
 exports.handleStatuses = function(options){
   try{
     var statuses = redmine.getStatuses();
