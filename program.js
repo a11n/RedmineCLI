@@ -59,6 +59,7 @@ program
   .command('update-issue <id>')
   .description('Update the specified issue.')
   .option('-P, --priority <priority>', 'Update the priority.')
+  .option('-p, --parent <parent_issue_id>', 'Create with parent task id.')
   .option('-a, --assignee <userId>', 'Update the assignee.')
   .option('-s, --status <status>', 'Update the status.')
   .option('-t, --tracker <tracker>', 'Update the tracker.')
