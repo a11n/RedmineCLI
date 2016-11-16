@@ -61,6 +61,7 @@ program
   .option('-P, --priority <priority>', 'Update the priority.')
   .option('-a, --assignee <userId>', 'Update the assignee.')
   .option('-s, --status <status>', 'Update the status.')
+  .option('-e, --estimated <estimatedHours>', 'Update the estimated hours.')
   .option('-t, --tracker <tracker>', 'Update the tracker.')
   .option('-S, --subject <subject>', 'Update the subject.')
   .option('-d, --description <description>', 'Update the description.')
@@ -73,6 +74,7 @@ program
   .option('-a, --assignee <userId>', 'Create with assignee.')
   .option('-s, --status <status>', 'Create with status.')
   .option('-t, --tracker <tracker>', 'Create with tracker.')
+  .option('-e, --estimated <estimatedHours>', 'Create with estimated hours.')
   .option('-d, --description <description>', 'Create with description.')
   .action(actions.handleCreateIssue);
 
