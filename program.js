@@ -61,6 +61,7 @@ program
   .option('-P, --priority <priority>', 'Update the priority.')
   .option('-a, --assignee <userId>', 'Update the assignee.')
   .option('-s, --status <status>', 'Update the status.')
+  .option('-e, --estimated <estimated_hours>', 'Update the estimated hours.')
   .option('-t, --tracker <tracker>', 'Update the tracker.')
   .option('-S, --subject <subject>', 'Update the subject.')
   .option('-d, --description <description>', 'Update the description.')
