@@ -143,7 +143,7 @@ exports.getIssues = function(filters){
   } catch(err) {throw 'Could not load issues.'}
 }
 
-exports.getIssue = function(id, options){
+exports.getIssue = function(id, options, parent_override){
   throwWhenNotConnected();
 
   var include = '';
@@ -154,6 +154,9 @@ exports.getIssue = function(id, options){
     var issue = JSON.parse(response.getBody('utf8'));
     if(issue.issue.journals)
       resolver.resolveHistoryIdsToNames(issue.issue);
+
+    if(!parent_override && issue.issue.parent && issue.issue.parent.id)
+      issue.issue.parent = exports.getIssue(issue.issue.parent.id, {}, true).issue;
 
     return issue;
   } catch(err) {throw 'Could not load issue.'}
