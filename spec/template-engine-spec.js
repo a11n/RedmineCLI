@@ -47,6 +47,19 @@ describe('template-engine.js', function() {
     expect(actual).toEqual(expected);
   });
 
+  it('should convert input to italic', function(){
+    var colors = require('colors');
+    var italic = tmpl.__get__('italic');
+
+    var input = 'italic';
+
+    var actual = italic(input);
+
+    var expected = input.italic;
+
+    expect(actual).toEqual(expected);
+  });
+
   it('should convert input to heading', function(){
     var colors = require('colors');
     var heading = tmpl.__get__('heading');
