@@ -1,4 +1,5 @@
-{% filter heading %}{{tracker.name}} #{{id}}{% endfilter %}
+{% if parent %}{% filter italic %}{{parent.tracker.name}} #{{parent.id}}:{{parent.subject}}{% endfilter %}
++--{% endif %}{% filter heading %}{{tracker.name}} #{{id}}{% endfilter %}
 {{subject}}
 Added by {% filter bold %}{{author.name}}{% endfilter %} {{created_on|ago}}.{% if updated_on %} Updated {{updated_on|ago}}.{% endif %}
 

@@ -11,6 +11,10 @@ var bold = function (input) {
   return input.bold;
 }
 
+var italic = function (input) {
+  return input.italic;
+}
+
 var heading = function (input) {
   return input.toUpperCase().bold.underline;
 };
@@ -35,6 +39,8 @@ var table = function (input, head) {
 swig.setFilter('ago', ago);
 
 swig.setFilter('bold', bold);
+
+swig.setFilter('italic', italic);
 
 swig.setFilter('heading', heading);
 

@@ -52,6 +52,9 @@ exports.handleIssues = function(options){
 exports.handleIssue = function(id, options){
   try{
     var issue = redmine.getIssue(id, options);
+    if (issue.issue && issue.issue.parent) {
+      issue.issue.parent = redmine.getIssue(issue.issue.parent.id, {}).issue;
+    }
     printer.printIssue(issue.issue);
   } catch(err){console.error(err)}
 }
