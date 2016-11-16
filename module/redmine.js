@@ -227,7 +227,6 @@ exports.importModel = function (filePath, model, options){
     var modelData = fs.readFileSync(filePath, encoding);
     var fd = fs.openSync(modelPath, "wx");
     fs.writeSync(fd, modelData, 0, encoding);
-
   } catch (err) {throw 'Could not import model:\n' + err}
 }
 
@@ -250,10 +249,13 @@ exports.listModels = function (){
     var path = require('path');
 
     var issuesModelPath = path.join(__dirname, '..', 'issues-models');
-    var models = fs.readdirSync(issuesModelPath);
+    const models = fs.readdirSync(issuesModelPath);
+    var result = [];
     for (var m in models)
-      console.log(models[m].replace('.json', ''));
+      result.push(models[m].replace('.json', ''));
     
+    return result;
+
   } catch (err) {throw 'Could not list models:\n' + err}
 }
 

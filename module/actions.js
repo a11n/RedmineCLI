@@ -85,9 +85,10 @@ exports.handleRemoveModel = function (model){
   } catch(err){console.error(err)}
 }
 
-exports.handleListModels = function (model){
+exports.handleListModels = function (){
   try {
-    redmine.listModels();
+    var models = redmine.listModels();
+    console.log(models.join("\n"));
   } catch(err){console.error(err)}
 }
 
