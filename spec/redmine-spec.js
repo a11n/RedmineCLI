@@ -303,7 +303,7 @@ describe('redmine.js', function() {
     spyOn(fs, 'openSync').andReturn();
     spyOn(fs, 'writeSync').andReturn();
     
-    var actual = redmine.importModel("", "", {});
+    var actual = redmine.importModel("", "", {encoding: "iso-8859-1"});
 
     expect(actual).toEqual(true);
   });
@@ -333,7 +333,7 @@ describe('redmine.js', function() {
     spyOn(fs, 'openSync').andReturn();
     spyOn(fs, 'writeSync').andReturn();
 
-    expect(function() {redmine.imporModel("", "", {});}).toThrow();
+    expect(function() {redmine.importModel("", "", {});}).toThrow("Could not import model:\nModel exists. Remove it first or use --force.");
   });
 
   it("should get statuses", function() {
