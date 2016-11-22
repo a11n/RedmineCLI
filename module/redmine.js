@@ -3,6 +3,8 @@ var nconf = require('nconf');
 var openInBrowser = require('open');
 var querystring = require('querystring');
 var resolver = require('./resolver.js');
+var fs = require('fs');
+var pth = require('path');
 
 nconf.file(__dirname + '/../config.json');
 
@@ -213,10 +215,7 @@ exports.createIssue = function(project, subject, options){
 
 exports.importModel = function (filePath, model, options){
   try {
-    var fs = require('fs');
-    var path = require('path');
-
-    var modelPath = path.join(__dirname, '..', 'issues-models', model + '.json');
+    var modelPath = pth.join(__dirname, '..', 'issues-models', model + '.json');
 
     if (fs.existsSync(modelPath) && !options.force)
       throw 'Model exists. Remove it first or use --force.'
@@ -232,10 +231,7 @@ exports.importModel = function (filePath, model, options){
 
 exports.removeModel = function (model){
   try {
-    var fs = require('fs');
-    var path = require('path');
-
-    var modelPath = path.join(__dirname, '..', 'issues-models', model + '.json');
+    var modelPath = pth.join(__dirname, '..', 'issues-models', model + '.json');
     if (!fs.existsSync(modelPath))
       throw 'Model not found.'
 
@@ -248,7 +244,7 @@ exports.listModels = function (){
     var fs = require('fs');
     var path = require('path');
 
-    var issuesModelPath = path.join(__dirname, '..', 'issues-models');
+    var issuesModelPath = pth.join(__dirname, '..', 'issues-models');
     const models = fs.readdirSync(issuesModelPath);
     var result = [];
     for (var m in models)
@@ -260,12 +256,9 @@ exports.listModels = function (){
 }
 
 exports.parseModel = function(model){
-  var fs = require('fs');
-  var path = require('path');
-
   try {
     // loading model JSON
-    var filePath = path.join(__dirname, '..', 'issues-models', model + '.json');
+    var filePath = pth.join(__dirname, '..', 'issues-models', model + '.json');
     var modelObject = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 
     // model pre-validation
