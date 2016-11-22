@@ -269,6 +269,24 @@ describe('redmine.js', function() {
       .toThrow('Could not create issue:\nServer responded with statuscode 500');
   });
 
+  it("should list models", function() {
+    var expected = "sample";
+    var fs = redmine.__get__('fs');
+    spyOn(fs, 'readdirSync').andReturn([expected + ".json"]);
+    
+    var actual = redmine.listModels();
+
+    expect(actual).toEqual([expected]);
+  });
+
+  it("should list models and return error", function() {
+    var fs = redmine.__get__('fs');
+    spyOn(fs, 'readdirSync').andCallFake(function() {
+      throw 'Folder issues-models not found.'
+    });
+    
+    expect(redmine.listModels).toThrow('Could not list models:\nFolder issues-models not found.');
+  });
 
   it("should get statuses", function() {
     var statuses = {issue_statuses: []};
