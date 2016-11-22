@@ -226,6 +226,7 @@ exports.importModel = function (filePath, model, options){
     var modelData = fs.readFileSync(filePath, encoding);
     var fd = fs.openSync(modelPath, "wx");
     fs.writeSync(fd, modelData, 0, encoding);
+    return true;
   } catch (err) {throw 'Could not import model:\n' + err}
 }
 
@@ -236,6 +237,7 @@ exports.removeModel = function (model){
       throw 'Model not found.'
 
     fs.unlinkSync(modelPath);
+    return true;
   } catch (err) {throw 'Could not remove model:\n' + err}
 }
 
