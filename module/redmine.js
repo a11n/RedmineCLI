@@ -348,9 +348,6 @@ exports.generateIssues = function(project, model, options){
 
       // creating issues
       var response = post('/issues.json', issue);
-      var issue = JSON.parse(response.getBody('utf8'));
-      successIds.push(issue.issue.id);
-
       if(response.statusCode == 404){
         throw 'Server responded with statuscode 404.\n' +
               'This is most likely the case when the specified project does not exist.\n' +
@@ -358,14 +355,17 @@ exports.generateIssues = function(project, model, options){
       }
       else if(response.statusCode != 201){
         throw 'Server responded with statuscode ' + response.statusCode + '\n' +
-              'Model with error:\n' + modelObject.issues[i];
+              'Model with error:\n' + JSON.stringify(issuesModel[i]);
       }
+
+      var issue = JSON.parse(response.getBody('utf8'));
+      successIds.push(issue.issue.id);
     }
 
     return successIds;
   } catch(err) {
     if (successIds.length > 0) {
-      throw 'Could not generate all issues. Issues created: ' + successIds.length.join(', ') + '. Error:\n' + err
+      throw 'Could not generate all issues. Issues created: ' + successIds.join(', ') + '. Error:\n' + err
     }
     else {
       throw 'Could not generate any issue:\n' + err
