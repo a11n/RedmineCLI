@@ -272,6 +272,8 @@ describe('redmine.js', function() {
   it("should list models", function() {
     var expected = "sample";
     var fs = redmine.__get__('fs');
+    var pth = redmine.__get__('pth');
+    spyOn(pth, 'join').andReturn("");
     spyOn(fs, 'readdirSync').andReturn([expected + ".json"]);
     
     var actual = redmine.listModels();
@@ -280,12 +282,58 @@ describe('redmine.js', function() {
   });
 
   it("should list models and return error", function() {
+    var pth = redmine.__get__('pth');
+    spyOn(pth, 'join').andReturn("/some/path");
+
     var fs = redmine.__get__('fs');
     spyOn(fs, 'readdirSync').andCallFake(function() {
       throw 'Folder issues-models not found.'
     });
     
     expect(redmine.listModels).toThrow('Could not list models:\nFolder issues-models not found.');
+  });
+
+  it("should import model", function() {
+    var pth = redmine.__get__('pth');
+    spyOn(pth, 'join').andReturn("/some/path");
+
+    var fs = redmine.__get__('fs');
+    spyOn(fs, 'existsSync').andReturn(false);
+    spyOn(fs, 'readFileSync').andReturn();
+    spyOn(fs, 'openSync').andReturn();
+    spyOn(fs, 'writeSync').andReturn();
+    
+    var actual = redmine.importModel("", "", {});
+
+    expect(actual).toEqual(true);
+  });
+
+  it("should import model with force", function() {
+    var pth = redmine.__get__('pth');
+    spyOn(pth, 'join').andReturn("/some/path");
+
+    var fs = redmine.__get__('fs');
+    spyOn(fs, 'existsSync').andReturn(true);
+    spyOn(fs, 'readFileSync').andReturn();
+    spyOn(fs, 'openSync').andReturn();
+    spyOn(fs, 'writeSync').andReturn();
+    
+    var actual = redmine.importModel("", "", {force: true});
+
+    expect(actual).toEqual(true);
+  });
+
+  it("should import model and return error", function() {
+    var pth = redmine.__get__('pth');
+    spyOn(pth, 'join').andReturn("/some/path");
+
+    var fs = redmine.__get__('fs');
+    spyOn(fs, 'existsSync').andReturn(true);
+    spyOn(fs, 'readFileSync').andReturn();
+    spyOn(fs, 'openSync').andReturn();
+    spyOn(fs, 'writeSync').andReturn();
+
+    expect(function() {redmine.imporModel("", "", {});}).toThrow();
   });
 
   it("should get statuses", function() {
