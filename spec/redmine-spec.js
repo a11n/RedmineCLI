@@ -485,6 +485,85 @@ describe('redmine.js', function() {
     expect(redmine.parseModel).toThrow('Could not parse the model:\nExpected property `subject` in all issues');
   });
 
+  it("should generate issues", function() {
+    var issue = {issue:{id:1}};
+    var post = jasmine.createSpy('post');
+    post.andReturn({statusCode:201,
+                    getBody: function(){return JSON.stringify(issue)}});
+    redmine.__set__('post', post);
+
+    var options = {
+      priority: 'High', status: 'New', tracker: 'Bug',
+      assignee: 1, description: 'Description',
+      parent: '1', estimated: 1, subject: 'Subject'
+    };
+    var model = {
+      globals: {
+        priority: 'High', status: 'New', tracker: 'Bug',
+        assignee: 1, description: 'Description',
+        parent: 1, estimated: 1, subject: 'Subject'
+      },
+      issues: [{
+        priority: 'High', status: 'New', tracker: 'Bug',
+        assignee: 1, description: 'Description',
+        parent: 1, estimated: 1, subject: 'Subject'
+      }]
+    }
+
+    spyOn(redmine, 'getPriorityIdByName').andReturn(1);
+    spyOn(redmine, 'getStatusIdByName').andReturn(1);
+    spyOn(redmine, 'getTrackerIdByName').andReturn(1);
+    spyOn(redmine, 'parseModel').andReturn(model.issues);
+
+    var actual = redmine.generateIssues('project', 'model', options);
+    var expected = [issue.issue.id];
+
+    expect(actual).toEqual(expected);
+  });
+
+  it("should generate issues and return error 404", function() {
+    var post = jasmine.createSpy('post');
+    post.andReturn({statusCode:404});
+    redmine.__set__('post', post);
+
+    spyOn(redmine, 'parseModel').andReturn([{subject: ""}]);
+
+    expect(redmine.generateIssues.bind(this, "project", "model", {})).toThrow('Could not generate any issue:\nServer responded with statuscode 404.\nThis is most likely the case when the specified project does not exist.\nDoes project \'project\' exist?');
+  });
+
+  it("should generate issues and return error 500", function() {
+    var post = jasmine.createSpy('post');
+    post.andReturn({statusCode:500});
+    redmine.__set__('post', post);
+
+    issue = {subject: ""};
+    spyOn(redmine, 'parseModel').andReturn([issue]);
+
+    expect(redmine.generateIssues.bind(this, "project", "model", {})).toThrow('Could not generate any issue:\nServer responded with statuscode 500\nModel with error:\n' + JSON.stringify(issue));
+  });
+
+  it("should generate issues and return error 404 with created issues", function() {
+    var post = jasmine.createSpy('post');
+    var first = true;
+    post.andCallFake(function() {
+      if (first) {
+        first = false;
+        return {
+          statusCode: 201,
+          getBody: function(){return JSON.stringify({issue:{id: 1}})}
+        };
+      }
+      else
+        return {statusCode:404};
+    });
+    redmine.__set__('post', post);
+
+    issue = {subject: ""};
+    spyOn(redmine, 'parseModel').andReturn([issue,issue]);
+
+    expect(redmine.generateIssues.bind(this, "project", "model", {})).toThrow('Could not generate all issues. Issues created: 1. Error:\nServer responded with statuscode 404.\nThis is most likely the case when the specified project does not exist.\nDoes project \'project\' exist?');
+  });
+
   it("should get statuses", function() {
     var statuses = {issue_statuses: []};
     var response = { getBody : function(){return JSON.stringify(statuses)}};
