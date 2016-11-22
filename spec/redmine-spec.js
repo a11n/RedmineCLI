@@ -336,6 +336,30 @@ describe('redmine.js', function() {
     expect(function() {redmine.importModel("", "", {});}).toThrow("Could not import model:\nModel exists. Remove it first or use --force.");
   });
 
+  it("should remove model", function() {
+    var pth = redmine.__get__('pth');
+    spyOn(pth, 'join').andReturn("/some/path");
+
+    var fs = redmine.__get__('fs');
+    spyOn(fs, 'existsSync').andReturn(true);
+    spyOn(fs, 'unlinkSync').andReturn();
+    
+    var actual = redmine.removeModel("");
+
+    expect(actual).toEqual(true);
+  });
+
+  it("should remove model and return error", function() {
+    var pth = redmine.__get__('pth');
+    spyOn(pth, 'join').andReturn("/some/path");
+
+    var fs = redmine.__get__('fs');
+    spyOn(fs, 'existsSync').andReturn(false);
+    spyOn(fs, 'unlinkSync').andReturn();
+
+    expect(redmine.removeModel).toThrow("Could not remove model:\nModel not found.");
+  });
+
   it("should get statuses", function() {
     var statuses = {issue_statuses: []};
     var response = { getBody : function(){return JSON.stringify(statuses)}};
