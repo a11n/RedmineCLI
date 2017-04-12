@@ -2,7 +2,7 @@
 A NodeJS, stateful, console-based Redmine client.
 
 ## Deprecated
-** This project is deprecated. There will be no new development on this project. **
+**This project is deprecated. There will be no new development on this project.**
 
 ## Installation & Setup
 ```shell
