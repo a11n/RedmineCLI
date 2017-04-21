@@ -201,6 +201,87 @@ describe('actions.js', function() {
     expect(console.error).toHaveBeenCalledWith('error');
   });
 
+  it("should handle import model", function() {
+    var options = {options: []}; 
+
+    spyOn(redmine, 'importModel').andReturn();
+    spyOn(console, 'log');
+
+    actions.handleImportModel("sample.json", "sample", options);
+
+    expect(redmine.importModel).toHaveBeenCalledWith("sample.json", "sample", options);
+    expect(console.log).toHaveBeenCalledWith('Model successfully imported: sample');
+  });
+
+  it("should handle import model and catch error", function() {
+    spyOn(redmine, 'importModel').andThrow('error');
+    spyOn(console, 'error');
+
+    actions.handleImportModel();
+
+    expect(console.error).toHaveBeenCalledWith('error');
+  });
+
+  it("should handle remove model", function() {
+    spyOn(redmine, 'removeModel').andReturn();
+    spyOn(console, 'log');
+
+    actions.handleRemoveModel("sample");
+
+    expect(redmine.removeModel).toHaveBeenCalledWith("sample");
+    expect(console.log).toHaveBeenCalledWith('Model successfully removed: sample');
+  });
+
+  it("should handle remove model and catch error", function() {
+    spyOn(redmine, 'removeModel').andThrow('error');
+    spyOn(console, 'error');
+
+    actions.handleRemoveModel();
+
+    expect(console.error).toHaveBeenCalledWith('error');
+  });
+
+  it("should handle list models", function() {
+    spyOn(redmine, 'listModels').andReturn(["sample"]);
+    spyOn(console, 'log');
+
+    actions.handleListModels();
+
+    expect(redmine.listModels).toHaveBeenCalledWith();
+    expect(console.log).toHaveBeenCalledWith('sample');
+  });
+
+  it("should handle list models and catch error", function() {
+    spyOn(redmine, 'listModels').andThrow('error');
+    spyOn(console, 'error');
+
+    actions.handleListModels();
+
+    expect(console.error).toHaveBeenCalledWith('error');
+  });
+
+  it("should handle generate issues", function() {
+    var options = {options:[]};
+    var result = [1,2,3];
+
+    spyOn(redmine, 'generateIssues').andReturn(result);
+    spyOn(console, 'log');
+
+    actions.handleGenerateIssues("project", "model", options);
+
+    expect(redmine.generateIssues).toHaveBeenCalledWith("project", "model", options);
+    expect(console.log).toHaveBeenCalledWith('Successfully generated issues ' + result.join(", "));
+  });
+
+  it("should handle generate issues and catch error", function() {
+    spyOn(redmine, 'generateIssues').andThrow('error');
+    spyOn(console, 'error');
+
+    actions.handleGenerateIssues();
+
+    expect(console.error).toHaveBeenCalledWith('error');
+  });
+
   it("should handle statuses", function() {
     var statuses = {statuses: []};
 

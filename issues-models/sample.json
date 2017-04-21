@@ -1,0 +1,19 @@
+{
+  "globals": {
+    "priority": "Normal",
+    "estimated": 1, 
+    "assignee": 15,
+    "status": "New",
+    "tracker": "Task"
+  },
+  "issues": [{
+    "subject": "Peer review",
+    "description": "Follow instructions on wiki and review the last commit on designated branch."
+  },{
+    "subject": "Run tests",
+    "description": "Follow instructions on wiki and run tests on designated branch."
+  },{
+    "subject": "Notify developers",
+    "description": "If errors were detected, create issues for developers, following the wiki template."
+  }]
+}

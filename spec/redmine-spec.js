@@ -269,6 +269,300 @@ describe('redmine.js', function() {
       .toThrow('Could not create issue:\nServer responded with statuscode 500');
   });
 
+  it("should list models", function() {
+    var expected = "sample";
+    var fs = redmine.__get__('fs');
+    var pth = redmine.__get__('pth');
+    spyOn(pth, 'join').andReturn("");
+    spyOn(fs, 'readdirSync').andReturn([expected + ".json"]);
+    
+    var actual = redmine.listModels();
+
+    expect(actual).toEqual([expected]);
+  });
+
+  it("should list models and return error", function() {
+    var pth = redmine.__get__('pth');
+    spyOn(pth, 'join').andReturn("/some/path");
+
+    var fs = redmine.__get__('fs');
+    spyOn(fs, 'readdirSync').andCallFake(function() {
+      throw 'Folder issues-models not found.'
+    });
+    
+    expect(redmine.listModels).toThrow('Could not list models:\nFolder issues-models not found.');
+  });
+
+  it("should import model", function() {
+    var pth = redmine.__get__('pth');
+    spyOn(pth, 'join').andReturn("/some/path");
+
+    var fs = redmine.__get__('fs');
+    spyOn(fs, 'existsSync').andReturn(false);
+    spyOn(fs, 'readFileSync').andReturn();
+    spyOn(fs, 'openSync').andReturn();
+    spyOn(fs, 'writeSync').andReturn();
+    
+    var actual = redmine.importModel("", "", {encoding: "iso-8859-1"});
+
+    expect(actual).toEqual(true);
+  });
+
+  it("should import model with force", function() {
+    var pth = redmine.__get__('pth');
+    spyOn(pth, 'join').andReturn("/some/path");
+
+    var fs = redmine.__get__('fs');
+    spyOn(fs, 'existsSync').andReturn(true);
+    spyOn(fs, 'readFileSync').andReturn();
+    spyOn(fs, 'openSync').andReturn();
+    spyOn(fs, 'writeSync').andReturn();
+    
+    var actual = redmine.importModel("", "", {force: true});
+
+    expect(actual).toEqual(true);
+  });
+
+  it("should import model and return error", function() {
+    var pth = redmine.__get__('pth');
+    spyOn(pth, 'join').andReturn("/some/path");
+
+    var fs = redmine.__get__('fs');
+    spyOn(fs, 'existsSync').andReturn(true);
+    spyOn(fs, 'readFileSync').andReturn();
+    spyOn(fs, 'openSync').andReturn();
+    spyOn(fs, 'writeSync').andReturn();
+
+    expect(function() {redmine.importModel("", "", {});}).toThrow("Could not import model:\nModel exists. Remove it first or use --force.");
+  });
+
+  it("should remove model", function() {
+    var pth = redmine.__get__('pth');
+    spyOn(pth, 'join').andReturn("/some/path");
+
+    var fs = redmine.__get__('fs');
+    spyOn(fs, 'existsSync').andReturn(true);
+    spyOn(fs, 'unlinkSync').andReturn();
+    
+    var actual = redmine.removeModel("");
+
+    expect(actual).toEqual(true);
+  });
+
+  it("should remove model and return error", function() {
+    var pth = redmine.__get__('pth');
+    spyOn(pth, 'join').andReturn("/some/path");
+
+    var fs = redmine.__get__('fs');
+    spyOn(fs, 'existsSync').andReturn(false);
+    spyOn(fs, 'unlinkSync').andReturn();
+
+    expect(redmine.removeModel).toThrow("Could not remove model:\nModel not found.");
+  });
+
+  it("should parse model", function() {
+    var pth = redmine.__get__('pth');
+    spyOn(pth, 'join').andReturn("/some/path");
+
+    var fs = redmine.__get__('fs');
+    spyOn(fs, 'readFileSync').andReturn("");
+
+    spyOn(JSON, 'parse').andReturn({
+      globals: {
+        assignee: 1
+      },
+      issues: [{
+        subject: "Test",
+        description: "Test"
+      },{
+        subject: "Test",
+        description: "Test"
+      }] 
+    });
+    
+    var actual = redmine.parseModel("");
+
+    expect(actual).toEqual([{
+      assignee: 1,
+      subject: "Test",
+      description: "Test"
+    },{
+      assignee: 1,
+      subject: "Test",
+      description: "Test"
+    }]);
+  });
+
+  it("should parse model and return error Invalid JSON", function() {
+    var pth = redmine.__get__('pth');
+    spyOn(pth, 'join').andReturn("/some/path");
+
+    var fs = redmine.__get__('fs');
+    spyOn(fs, 'readFileSync').andReturn("");
+
+    spyOn(JSON, 'parse').andReturn(null);
+
+    expect(redmine.parseModel).toThrow('Could not parse the model:\nInvalid JSON');
+  });
+
+  it("should parse model and return error Expected property issues on model", function() {
+    var pth = redmine.__get__('pth');
+    spyOn(pth, 'join').andReturn("/some/path");
+
+    var fs = redmine.__get__('fs');
+    spyOn(fs, 'readFileSync').andReturn("");
+
+    spyOn(JSON, 'parse').andReturn({
+      globals: {
+        assignee: 1
+      } 
+    });
+
+    expect(redmine.parseModel).toThrow('Could not parse the model:\nExpected property `issues` (Array) on model');
+  });
+
+  it("should parse model and return error Expected property issues containing at least 1 item", function() {
+    var pth = redmine.__get__('pth');
+    spyOn(pth, 'join').andReturn("/some/path");
+
+    var fs = redmine.__get__('fs');
+    spyOn(fs, 'readFileSync').andReturn("");
+
+    spyOn(JSON, 'parse').andReturn({
+      globals: {
+        assignee: 1
+      },
+      issues: []
+    });
+
+    expect(redmine.parseModel).toThrow('Could not parse the model:\nExpected property `issues` (Array) containing at least 1 element on model');
+  });
+
+  it("should parse model and return error Expected property issues of type Array<object>", function() {
+    var pth = redmine.__get__('pth');
+    spyOn(pth, 'join').andReturn("/some/path");
+
+    var fs = redmine.__get__('fs');
+    spyOn(fs, 'readFileSync').andReturn("");
+
+    spyOn(JSON, 'parse').andReturn({
+      globals: {
+        assignee: 1
+      },
+      issues: ['error']
+    });
+
+    expect(redmine.parseModel).toThrow('Could not parse the model:\nInvalid property `issues` (Array<string>) on model. Expected Array<object>.');
+  });
+
+  it("should parse model and return error Expected property globals of type object", function() {
+    var pth = redmine.__get__('pth');
+    spyOn(pth, 'join').andReturn("/some/path");
+
+    var fs = redmine.__get__('fs');
+    spyOn(fs, 'readFileSync').andReturn("");
+
+    spyOn(JSON, 'parse').andReturn({
+      globals: '',
+      issues: [{}]
+    });
+
+    expect(redmine.parseModel).toThrow('Could not parse the model:\nInvalid property `globals` (string) on model. Expected object.');
+  });
+
+  it("should parse model and return error Expected property subject in all issues", function() {
+    var pth = redmine.__get__('pth');
+    spyOn(pth, 'join').andReturn("/some/path");
+
+    var fs = redmine.__get__('fs');
+    spyOn(fs, 'readFileSync').andReturn("");
+
+    spyOn(JSON, 'parse').andReturn({
+      globals: {},
+      issues: [{}]
+    });
+
+    expect(redmine.parseModel).toThrow('Could not parse the model:\nExpected property `subject` in all issues');
+  });
+
+  it("should generate issues", function() {
+    var issue = {issue:{id:1}};
+    var post = jasmine.createSpy('post');
+    post.andReturn({statusCode:201,
+                    getBody: function(){return JSON.stringify(issue)}});
+    redmine.__set__('post', post);
+
+    var options = {
+      priority: 'High', status: 'New', tracker: 'Bug',
+      assignee: 1, description: 'Description',
+      parent: '1', estimated: 1, subject: 'Subject'
+    };
+    var model = {
+      globals: {
+        priority: 'High', status: 'New', tracker: 'Bug',
+        assignee: 1, description: 'Description',
+        parent: 1, estimated: 1, subject: 'Subject'
+      },
+      issues: [{
+        priority: 'High', status: 'New', tracker: 'Bug',
+        assignee: 1, description: 'Description',
+        parent: 1, estimated: 1, subject: 'Subject'
+      }]
+    }
+
+    spyOn(redmine, 'getPriorityIdByName').andReturn(1);
+    spyOn(redmine, 'getStatusIdByName').andReturn(1);
+    spyOn(redmine, 'getTrackerIdByName').andReturn(1);
+    spyOn(redmine, 'parseModel').andReturn(model.issues);
+
+    var actual = redmine.generateIssues('project', 'model', options);
+    var expected = [issue.issue.id];
+
+    expect(actual).toEqual(expected);
+  });
+
+  it("should generate issues and return error 404", function() {
+    var post = jasmine.createSpy('post');
+    post.andReturn({statusCode:404});
+    redmine.__set__('post', post);
+
+    spyOn(redmine, 'parseModel').andReturn([{subject: ""}]);
+
+    expect(redmine.generateIssues.bind(this, "project", "model", {})).toThrow('Could not generate any issue:\nServer responded with statuscode 404.\nThis is most likely the case when the specified project does not exist.\nDoes project \'project\' exist?');
+  });
+
+  it("should generate issues and return error 500", function() {
+    var post = jasmine.createSpy('post');
+    post.andReturn({statusCode:500});
+    redmine.__set__('post', post);
+
+    issue = {subject: ""};
+    spyOn(redmine, 'parseModel').andReturn([issue]);
+
+    expect(redmine.generateIssues.bind(this, "project", "model", {})).toThrow('Could not generate any issue:\nServer responded with statuscode 500\nModel with error:\n' + JSON.stringify(issue));
+  });
+
+  it("should generate issues and return error 404 with created issues", function() {
+    var post = jasmine.createSpy('post');
+    var first = true;
+    post.andCallFake(function() {
+      if (first) {
+        first = false;
+        return {
+          statusCode: 201,
+          getBody: function(){return JSON.stringify({issue:{id: 1}})}
+        };
+      }
+      else
+        return {statusCode:404};
+    });
+    redmine.__set__('post', post);
+
+    issue = {subject: ""};
+    spyOn(redmine, 'parseModel').andReturn([issue,issue]);
+
+    expect(redmine.generateIssues.bind(this, "project", "model", {})).toThrow('Could not generate all issues. Issues created: 1. Error:\nServer responded with statuscode 404.\nThis is most likely the case when the specified project does not exist.\nDoes project \'project\' exist?');
+  });
 
   it("should get statuses", function() {
     var statuses = {issue_statuses: []};

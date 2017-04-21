@@ -79,6 +79,64 @@ program
   .action(actions.handleCreateIssue);
 
 program
+  .command('import-model <file_path> <model>')
+  .description('Import the model file into redmine-cli for usage.')
+  .option('-f, --force', 'Overwrite the model if it exists.')
+  .option('-e, --encoding', 'Sets the file encoding (default: utf8).')
+  .action(actions.handleImportModel);
+
+program
+  .command('remove-model <model>')
+  .description('Remove the model from redmine-cli.')
+  .action(actions.handleRemoveModel);
+
+program
+  .command('list-models')
+  .description('Prints all issue models imported onto redmine-cli.')
+  .action(actions.handleListModels);
+
+program
+  .command('generate-issues <project> <model>')
+  .description('Generate a set of subtasks using a predefined model. You can set the options to override the model globals')
+  .option('-P, --priority <priority>', 'Create with priority.')
+  .option('-p, --parent <parentIssueId>', 'Create with parent task id.')
+  .option('-e, --estimated <estimatedHours>', 'Create with estimated hours.')
+  .option('-a, --assignee <userId>', 'Create with assignee.')
+  .option('-s, --status <status>', 'Create with status.')
+  .option('-t, --tracker <tracker>', 'Create with tracker.')
+  .option('-d, --description <description>', 'Create with description.')
+  .action(actions.handleGenerateIssues).on('--help', function () {
+    console.log('  Usage example:');
+    console.log('    $ redmine generate-issues 15 sample --parent 371');
+    console.log('        This command would create 3 subtaks for issue 371 at project 15 using model "sample".');
+    console.log();
+    console.log('    model "sample":');
+    console.log('    {');
+    console.log('      // all properties are optional');
+    console.log('      // available properties are:'); 
+    console.log('      //       assignee, description, estimated, parent, priority, status, subject and tracker');
+    console.log('      "globals": {');
+    console.log('        "priority": "Normal,');
+    console.log('        "estimate"": 1,'); 
+    console.log('        "assignee": 15,');
+    console.log('        "status": "New",');
+    console.log('        "tracker": "Task"');
+    console.log('      },');
+    console.log('      "issues": [{');
+    console.log('        "subject": "Peer review",');
+    console.log('        "description": "Follow instructions on wiki and review the last commit on designated branch."');
+    console.log('      },{');
+    console.log('        "subject": "Run tests",');
+    console.log('        "description": "Follow instructions on wiki and run tests on designated branch."');
+    console.log('      },{');
+    console.log('        "subject": "Notify developers",');
+    console.log('        "description": "If errors were detected, create issues for developers, following the wiki template."');
+    console.log('      }]');
+    console.log('    }');
+  });
+
+
+program
   .command('statuses')
   .description('Display available issue statuses.')
   .action(actions.handleStatuses);

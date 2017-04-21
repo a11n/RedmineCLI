@@ -3,6 +3,8 @@ var nconf = require('nconf');
 var openInBrowser = require('open');
 var querystring = require('querystring');
 var resolver = require('./resolver.js');
+var fs = require('fs');
+var pth = require('path');
 
 nconf.file(__dirname + '/../config.json');
 
@@ -211,6 +213,166 @@ exports.createIssue = function(project, subject, options){
     var issue = JSON.parse(response.getBody('utf8'));
     return issue;
   } catch(err) {throw 'Could not create issue:\n' + err}
+}
+
+exports.importModel = function (filePath, model, options){
+  try {
+    var modelPath = pth.join(__dirname, '..', 'issues-models', model + '.json');
+
+    if (fs.existsSync(modelPath) && !options.force)
+      throw 'Model exists. Remove it first or use --force.'
+
+    var encoding = "utf8";
+    if (options.encoding) encoding = options.encoding;
+
+    var modelData = fs.readFileSync(filePath, encoding);
+    var fd = fs.openSync(modelPath, "wx");
+    fs.writeSync(fd, modelData, 0, encoding);
+    return true;
+  } catch (err) {throw 'Could not import model:\n' + err}
+}
+
+exports.removeModel = function (model){
+  try {
+    var modelPath = pth.join(__dirname, '..', 'issues-models', model + '.json');
+    if (!fs.existsSync(modelPath))
+      throw 'Model not found.'
+
+    fs.unlinkSync(modelPath);
+    return true;
+  } catch (err) {throw 'Could not remove model:\n' + err}
+}
+
+exports.listModels = function (){
+  try {
+    var fs = require('fs');
+    var path = require('path');
+
+    var issuesModelPath = pth.join(__dirname, '..', 'issues-models');
+    const models = fs.readdirSync(issuesModelPath);
+    var result = [];
+    for (var m in models)
+      result.push(models[m].replace('.json', ''));
+    
+    return result;
+
+  } catch (err) {throw 'Could not list models:\n' + err}
+}
+
+exports.parseModel = function(model){
+  try {
+    // loading model JSON
+    var filePath = pth.join(__dirname, '..', 'issues-models', model + '.json');
+    var modelObject = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+
+    // model pre-validation
+    if (!modelObject)
+      throw 'Invalid JSON';
+
+    if (modelObject.issues instanceof Array == false)
+      throw 'Expected property `issues` (Array) on model';
+
+    if (modelObject.issues.length == 0)
+      throw 'Expected property `issues` (Array) containing at least 1 element on model';
+
+    if (typeof(modelObject.issues[0]) != "object")
+      throw 'Invalid property `issues` (Array<' + typeof(modelObject.issues[0]) + '>) on model. Expected Array<object>.';
+
+    if (typeof(modelObject.globals) != "object")
+      throw 'Invalid property `globals` (' + typeof(modelObject.globals) + ') on model. Expected object.';
+
+    // parsing globals
+    for (var p in modelObject.globals) {
+      for (var i in modelObject.issues) {
+        modelObject.issues[i][p] = modelObject.globals[p];
+      }
+    }
+
+    // model post-validation
+    for (var i in modelObject.issues) {
+        if (typeof(modelObject.issues[i].subject) != "string" || modelObject.issues[i].subject.length == 0)
+          throw 'Expected property `subject` in all issues' 
+    }
+    
+    
+    return modelObject.issues;
+  } catch(err) {throw 'Could not parse the model:\n' + err}
+}
+
+
+//TODO: rollback in case of error (delete issues that were created)
+exports.generateIssues = function(project, model, options){
+  throwWhenNotConnected();
+
+  var successIds = []
+
+  try{
+    // processing the model
+    var issuesModel = exports.parseModel(model);
+    for(var i in issuesModel){
+
+      // translating issuesModel properties to redmine API
+      var issue = {issue:{'project_id':project, 'subject': issuesModel[i].subject}};
+
+      // setting model properties
+      if(issuesModel[i].priority)
+        issue.issue.priority_id = exports.getStatusIdByName(issuesModel[i].priority);
+      if(issuesModel[i].assignee)
+        issue.issue.assigned_to_id = issuesModel[i].assignee;
+      if(issuesModel[i].parent)
+        issue.issue.parent_issue_id = issuesModel[i].parent;
+      if(issuesModel[i].estimated)
+        issue.issue.estimated_hours = issuesModel[i].estimated;
+      if(issuesModel[i].status)
+        issue.issue.status_id = exports.getStatusIdByName(issuesModel[i].status);
+      if(issuesModel[i].tracker)
+        issue.issue.tracker_id = exports.getTrackerIdByName(issuesModel[i].tracker);
+      if(issuesModel[i].description)
+        issue.issue.description = issuesModel[i].description;
+      
+      // overriding issuesModel options with command line options
+      if(options.priority)
+        issue.issue.priority_id = exports.getStatusIdByName(options.priority);
+      if(options.assignee)
+        issue.issue.assigned_to_id = options.assignee;
+      if(options.parent && typeof options.parent == 'string')
+        issue.issue.parent_issue_id = options.parent;
+      if(options.estimated)
+        issue.issue.estimated_hours = options.estimated;
+      if(options.status)
+        issue.issue.status_id = exports.getStatusIdByName(options.status);
+      if(options.tracker)
+        issue.issue.tracker_id = exports.getTrackerIdByName(options.tracker);
+      if(options.description && typeof options.description == 'string')
+        issue.issue.description = options.description;
+      if(options.subject)
+        issue.issue.subject = options.subject;
+
+      // creating issues
+      var response = post('/issues.json', issue);
+      if(response.statusCode == 404){
+        throw 'Server responded with statuscode 404.\n' +
+              'This is most likely the case when the specified project does not exist.\n' +
+              'Does project \''+ project +'\' exist?';
+      }
+      else if(response.statusCode != 201){
+        throw 'Server responded with statuscode ' + response.statusCode + '\n' +
+              'Model with error:\n' + JSON.stringify(issuesModel[i]);
+      }
+
+      var issue = JSON.parse(response.getBody('utf8'));
+      successIds.push(issue.issue.id);
+    }
+
+    return successIds;
+  } catch(err) {
+    if (successIds.length > 0) {
+      throw 'Could not generate all issues. Issues created: ' + successIds.join(', ') + '. Error:\n' + err
+    }
+    else {
+      throw 'Could not generate any issue:\n' + err
+    }
+  }
 }
 
 exports.getStatuses = function(){
