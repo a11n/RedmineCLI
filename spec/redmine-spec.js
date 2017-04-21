@@ -185,12 +185,12 @@ describe('redmine.js', function() {
   });
 
   it("should get issue", function() {
-    var issue = {issue: {journals: []}};
+    var issue = {issue: {journals: [], parent:{id:1}}};
     var response = { getBody : function(){return JSON.stringify(issue)}};
     redmine.__set__('get', function(){return response;});
 
     var actual = redmine.getIssue(1, {history: true});
-    var expected = issue;
+    var expected = {issue: {journals: [], parent: {journals: [], parent:{id:1}}}};;
 
     expect(actual).toEqual(expected);
   });
@@ -206,7 +206,7 @@ describe('redmine.js', function() {
 
     var options = {
       priority: 'High', status: 'New', tracker: 'Bug', assignee: 1,
-      subject: 'Subject', description: 'Description'
+      subject: 'Subject', description: 'Description', parent: 1
     };
 
     redmine.updateIssue(1, options);
@@ -238,7 +238,7 @@ describe('redmine.js', function() {
 
     var options = {
       priority: 'High', status: 'New', tracker: 'Bug',
-      assignee: 1, description: 'Description'
+      assignee: 1, description: 'Description', parent: 1
     };
 
     var actual = redmine.createIssue('project', 'subject', options);
