@@ -175,6 +175,7 @@ exports.updateIssue = function(id, options){
       issue.issue.tracker_id = exports.getTrackerIdByName(options.tracker);
     if(options.subject) issue.issue.subject = options.subject;
     if(options.description) issue.issue.description = options.description;
+    if(options.notes) issue.issue.notes = options.notes;
 
     var response = put('/issues/' + id + '.json', issue);
     if(response.statusCode != 200)

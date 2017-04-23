@@ -65,6 +65,7 @@ program
   .option('-t, --tracker <tracker>', 'Update the tracker.')
   .option('-S, --subject <subject>', 'Update the subject.')
   .option('-d, --description <description>', 'Update the description.')
+  .option('-n, --notes <notes>', 'Add a note/comment to the issue.')
   .action(actions.handleUpdateIssue);
 
 program
