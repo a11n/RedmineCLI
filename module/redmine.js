@@ -51,10 +51,10 @@ exports.connect = function(serverUrl, apiKey){
   return user;
 }
 
-exports.getProjects = function(){
+exports.getProjects = function(offset, limit){
   throwWhenNotConnected();
 
-  var response = get('/projects.json');
+  var response = get('/projects.json?offset=' + offset + '&limit=' + limit);
   try{
     return JSON.parse(response.getBody('utf8'));
   } catch(err) {throw 'Could not load projects.'}

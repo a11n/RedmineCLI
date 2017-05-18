@@ -11,7 +11,19 @@ exports.handleConnect = function(url, apiKey){
 
 exports.handleProjects = function(){
   try{
-    var projects = redmine.getProjects();
+    var offset = 0,
+    limit = 100
+    projects = redmine.getProjects(offset, limit),
+    uniqueArray = function(arrArg) {
+      return arrArg.filter(function(elem, pos,arr) {
+        return arr.indexOf(elem) == pos;
+      });
+    },
+    total_runs = Math.ceil(projects.total_count / ((offset+1)*limit));
+    for(offset; offset<total_runs; offset++){
+        tmp_projects = redmine.getProjects(offset*limit+1, limit);
+        projects.projects = uniqueArray(projects.projects.concat(tmp_projects.projects));
+    }
     printer.printProjects(projects);
   } catch(err){console.error(err)}
 }
