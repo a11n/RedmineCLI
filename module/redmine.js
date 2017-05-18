@@ -51,7 +51,7 @@ exports.connect = function(serverUrl, apiKey){
   return user;
 }
 
-exports.getProjects = function(offset=0, limit=50){
+exports.getProjects = function(offset, limit){
   throwWhenNotConnected();
 
   var response = get('/projects.json?offset=' + offset + '&limit=' + limit);
