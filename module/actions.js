@@ -10,12 +10,6 @@ exports.handleConnect = function(url, apiKey){
 }
 
 exports.handleProjects = function(){
-  function extend(obj, src) {
-      for (var key in src) {
-          if (src.hasOwnProperty(key)) obj[key] = src[key];
-      }
-      return obj;
-  }
   try{
     var offset = 0,
     limit = 100
