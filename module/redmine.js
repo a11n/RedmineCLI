@@ -51,10 +51,10 @@ exports.connect = function(serverUrl, apiKey){
   return user;
 }
 
-exports.getProjects = function(){
+exports.getProjects = function(offset=0, limit=50){
   throwWhenNotConnected();
 
-  var response = get('/projects.json');
+  var response = get('/projects.json?offset=' + offset + '&limit=' + limit);
   try{
     return JSON.parse(response.getBody('utf8'));
   } catch(err) {throw 'Could not load projects.'}
@@ -170,7 +170,6 @@ exports.updateIssue = function(id, options){
     if(options.assignee) issue.issue.assigned_to_id = options.assignee;
     if(options.status)
       issue.issue.status_id = exports.getStatusIdByName(options.status);
-    if(options.estimated) issue.issue.estimated_hours = options.estimated;
     if(options.tracker)
       issue.issue.tracker_id = exports.getTrackerIdByName(options.tracker);
     if(options.subject) issue.issue.subject = options.subject;
@@ -193,7 +192,6 @@ exports.createIssue = function(project, subject, options){
     if(options.assignee) issue.issue.assigned_to_id = options.assignee;
     if(options.status)
       issue.issue.status_id = exports.getStatusIdByName(options.status);
-    if(options.estimated) issue.issue.estimated_hours = options.estimated;
     if(options.tracker)
       issue.issue.tracker_id = exports.getTrackerIdByName(options.tracker);
     if(options.description) issue.issue.description = options.description;

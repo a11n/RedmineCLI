@@ -1,9 +1,6 @@
 # RedmineCLI [![Build Status](https://travis-ci.org/a11n/RedmineCLI.svg)](https://travis-ci.org/a11n/RedmineCLI) [![Coverage Status](https://coveralls.io/repos/a11n/RedmineCLI/badge.svg)](https://coveralls.io/r/a11n/RedmineCLI) [![npm version](http://img.shields.io/npm/v/redmine-cli.svg?style=flat)](https://www.npmjs.com/package/redmine-cli) [![npm license](https://img.shields.io/npm/l/redmine-cli.svg)](https://www.npmjs.com/package/redmine-cli)
 A NodeJS, stateful, console-based Redmine client.
 
-## Deprecated
-**This project is deprecated. There will be no new development on this project.**
-
 ## Installation & Setup
 ```shell
 npm install -g redmine-cli
@@ -35,8 +32,8 @@ create-issue [options] <project> <subject>    Create a new issue.
 statuses                                      Display available issue statuses.
 trackers                                      Display available trackers.
 priorities                                    Display available priorities.
-users                                         Display users (requires admin priviliges).
-user <id>                                     Display user details (requires admin priviliges).
+users                                         Display users (requires admin privileges).
+user <id>                                     Display user details (requires admin privileges).
 open <id>                                     Open issue in default browser.
 
 
